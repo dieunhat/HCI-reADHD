@@ -16,7 +16,6 @@ function ReadingPage() {
         if (!summary_card) return
 
         const summaryButton = summary_card.querySelector('.card-title .card-action button')
-
         const handleTopSideButtonClick = () => {
             console.log('Summary button clicked')
             setLoading(true);
@@ -39,6 +38,8 @@ function ReadingPage() {
             })
             .then(() => {
                 setLoading(false);
+            //     add "disabled" to classNames of button
+                summaryButton.classList.add('btn-disabled')
             })
             .catch((error) => {
                 console.error('Error:', error);
