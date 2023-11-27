@@ -17,7 +17,7 @@ import React from "react";
 
             {/* Title for Card */}
               <Title styleClass={TopSideButtons ? "inline-block card-title" : "card-title"}>
-                  {title}
+                  <div className="inline-block title-text w-max">{title}</div>
 
                 {/* Top side button, show only if present */}
                 {/*  Handle click*/}
