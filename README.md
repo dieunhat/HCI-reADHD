@@ -1,7 +1,15 @@
 # HCI-ADHDHelpKit
 
-## Frontend Initialize
+## Initialize
+### Backend
+```bash
+    cd backend
+    python -m venv venv
+    ./venv/Scripts/activate
+    pip install -r requirements.txt
+```
 
+### Frontend
 ```bash
     cd frontend
     npm install
