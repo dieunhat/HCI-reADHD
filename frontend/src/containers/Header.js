@@ -51,10 +51,10 @@ function Header(){
 
     return(
         <>
-            <div className="navbar flex justify-between bg-base-100  z-10 shadow-md ">
+            <div className="navbar flex justify-between bg-info z-10 shadow-md ">
 
                 <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-primary">
+                    <div tabIndex={0} role="button" className="btn btn-primary btn-warning">
                         <Bars3Icon className="h-5 inline-block w-5"/>
                     </div>
                     <LeftSidebar />
