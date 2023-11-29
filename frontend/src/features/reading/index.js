@@ -22,6 +22,7 @@ function ReadingPage() {
                 response.json().then(r => {
                     console.log(r);
                     setContent(r['texts'][0])
+
                     setContentTitle(r['title'])
                     console.log(content)
                 })
@@ -124,7 +125,7 @@ function ReadingPage() {
                 bionicButton.classList.add('btn-outline')
                 bionicButton.classList.replace('text-info', 'text-primary')
             } else {
-                setCurrentText(content)
+                setCurrentText(content.replace(/\n/g, '<br>'))
                 setIsBionicMode(false)
 
                 bionicButton.classList.remove('btn-outline')
@@ -138,12 +139,13 @@ function ReadingPage() {
 
     return (
         <div className='mx-auto my-0 h-fit'>
-            <TitleCard id='doc' title={contentTitle} TopSideButtons={'Bionic Mode'}>
+            <TitleCard id='doc' title={<p className="text-success">{contentTitle}</p>} TopSideButtons={'Bionic Mode'}>
                 <div className='card-body max-h-[26rem] text-justify w-full h-[26rem] py-1
                                 overflow-y-auto scroll-smooth scroll-p-1'>
                     <article id={'content'} className='prose max-w-[48rem]'>
-                        {currentText !== '' ? <p dangerouslySetInnerHTML={{__html: currentText}}></p> 
-                                            : <p>{content}</p>}
+                        {currentText !== '' ? <div dangerouslySetInnerHTML={{__html: currentText}}></div> 
+                                            : <div dangerouslySetInnerHTML={{__html: content.replace(/\n/g, '<br>')}}></div>
+                        }
                         {/*<p dangerouslySetInnerHTML={{__html: currentText}}></p>*/}
                         {/*<p dangerouslySetInnerHTML={{__html: content}}></p>*/}
                     </article>

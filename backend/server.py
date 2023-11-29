@@ -40,7 +40,13 @@ def read_text():
     if 'content' not in request.json:
         return jsonify({'error': 'No content.'})
     input_text = request.json['content']
-    response = text_file_processer.read_text(input_text)
+    texts = text_file_processer.read_text(input_text)
+
+    response = {
+        'title': 'text',
+        'texts': texts,
+    } 
+
     # save content to temp json file
     logging.log(logging.INFO, 'Response:', response)
     temp_json = open(TEMP_DATA_PATH, 'w')
