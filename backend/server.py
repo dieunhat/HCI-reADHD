@@ -2,6 +2,7 @@ import json
 import os
 
 from flask import Flask, request, jsonify, redirect
+from flask_cors import CORS
 from wsgiref.simple_server import WSGIServer
 import logging
 
@@ -9,6 +10,7 @@ import model
 import text_file_processer
 
 app = Flask(__name__)
+# CORS(app, origins="http://localhost:3000", supports_credentials=True, methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 
 TEMP_DATA_PATH = 'temp_content/temp.json'
 # create temp_content folder if not exist
@@ -28,7 +30,7 @@ def index():
 def summarize():
     input_text = request.json['content']
     summary = model.summarize(input_text)
-    response = jsonify({'summary': summary})
+    response = jsonify({'texts': summary})
     logging.log(logging.INFO, 'Response:', response)
     return response
 
@@ -48,7 +50,11 @@ def read_text():
 
 @app.route('/api/read_file', methods=['POST'])
 def read_file():
-    if 'file' not in request.json:
+    for key in request.files:
+        print(key)
+    for key in request.form:
+        print(key)
+    if 'file' not in request.files:
         print('No file part')
         return redirect(request.url)
     file = request.files['file']
@@ -57,19 +63,24 @@ def read_file():
         return redirect(request.url)
     if file:
         if file.filename.endswith('.pdf'):
-            response = text_file_processer.read_pdf(file)
+            texts = text_file_processer.read_pdf(file)
         elif file.filename.endswith('.txt'):
-            response = text_file_processer.read_txt(file)
+            texts = text_file_processer.read_txt(file)
         elif file.filename.endswith('.docx'):
-            response = text_file_processer.read_docx(file)
+            texts = text_file_processer.read_docx(file)
         else:
             return jsonify({'error': 'File type not supported.'})
+
+        response = {
+            'title': file.filename.split('.')[0],
+            'texts': texts,
+        }
 
         # save content to temp json file
         logging.log(logging.INFO, 'Response:', response)
         temp_json = open(TEMP_DATA_PATH, 'w')
         json.dump(response, temp_json)
-        return jsonify(response)
+        return jsonify(response, {'headers': {'Access-Control-Allow-Origin': '*'}}) 
 
 
 @app.route('/api/get_content', methods=['GET'])

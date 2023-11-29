@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setPageTitle } from '../../features/common/headerSlice'
-import {Link} from 'react-router-dom'
 import TextareaAutosize from 'react-textarea-autosize';
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function InternalPage(){
 
@@ -68,15 +68,19 @@ function InternalPage(){
                 })
         } else {
             // send inputFile to backend
-            console.log('input file is: ' + inputFile)
+            console.log('input file is: ' + inputFile.name)
+            const formData = new FormData();
+            formData.append('file', inputFile)
+            formData.append('filename', inputFile.name)
+            console.log(formData)
             fetch('/api/read_file', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type':'multipart/formdata',
+                    'Access-Control-Allow-Origin': 'http://localhost:3000'
                 },
-                body: JSON.stringify({
-                    "file": inputFile,
-                })
+                body: formData,
+                mode: "no-cors"
             })
                 .then(response => {
                     console.log(response)
@@ -89,7 +93,19 @@ function InternalPage(){
                 .catch((error) => {
                     console.error('Error:', error);
                 })
-            }
+            // axios.post(
+            //     '/api/read_file',
+            //     formData,
+            //     {headers: {'Content-Type': 'multipart/form-data'}}
+            // ).then(response => {
+            //     console.log(response)
+            //     console.log("redirecting to reading page")
+            //     redirect('/app/reading')
+            // })
+            //     .catch((error) => {
+            //         console.error('Error:', error);
+            //     })
+        }
     }
 
 
@@ -111,7 +127,8 @@ function InternalPage(){
                           Add Text
                       </button>
                       <button onClick={handleUploadText}
-                          className={currentButtonAddText ? "btn join-item btn-info" : "btn join-item btn-warning hover:bg-warning hover:border-0 cursor-default no-animation"}>
+                          className={currentButtonAddText ? "btn join-item btn-info" 
+                          : "btn join-item btn-warning hover:bg-warning hover:border-0 cursor-default no-animation"}>
                           Upload Text
                       </button>
                   </div>
@@ -131,17 +148,16 @@ function InternalPage(){
                                         placeholder={'You can enter your text here.'} />
                       :
                       //     upload file area
-                      <span className={'w-full px-20 hero mt-5'}>
-                          <input type="file" className="file-input file-input-primary w-96 mx-auto"
+                      <div className={'w-full px-20 hero mt-5 tooltip tooltip-success hover:tooltip-open tooltip-bottom'} 
+                            data-tip='Accept .docx, .txt, .pdf' >
+                          <input name='file' type="file" className="file-input file-input-success w-96 mx-auto"
                                  accept={'.docx,' + 'application/pdf,' + '.txt'}
                                     onChange={(e) => updateInputFile({
-                                        updateType: 'inputFile', value: e.target.value})}
+                                        updateType: 'inputFile', value: e.target.files[0]})}
                                  />
-                      </span>
+                      </div>
                   }
               </div>
-
-
           </div>
     </div>
     )

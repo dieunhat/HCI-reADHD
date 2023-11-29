@@ -5,9 +5,12 @@ import ClipboardDocumentIcon from "@heroicons/react/24/outline/ClipboardDocument
 
 function ReadingPage() {
     const [content, setContent] = React.useState('')
+    const [contentTitle, setContentTitle] = React.useState('')
+    const [isBionicMode, setIsBionicMode] = React.useState(false)
 
     // get content from read_text endpoint
     React.useEffect(() => {
+        if (content !== '') return;  // if content is not empty, do not fetch again
         fetch('/api/get_content', {
             method: 'GET',
             headers: {
@@ -18,7 +21,9 @@ function ReadingPage() {
                 console.log(response)
                 response.json().then(r => {
                     console.log(r);
-                    setContent(r.texts[0])
+                    setContent(r['texts'][0])
+                    setContentTitle(r['title'])
+                    console.log(content)
                 })
             })
             .catch((error) => {
@@ -52,6 +57,12 @@ function ReadingPage() {
         const handleSummaryButtonClick = () => {
             console.log('Summary button clicked')
             setLoading(true);
+            // add child element span with class 'loading loading-spinner' to button
+            let span = document.createElement('span')
+            span.classList.add('loading', 'loading-spinner')
+            if (summaryButton.childNodes.length === 1) {
+                summaryButton.appendChild(span)
+            }
 
             fetch('/api/summarize', {
                 method: 'POST',
@@ -66,11 +77,14 @@ function ReadingPage() {
                 console.log(response)
                 response.json().then(r => {
                     console.log(r);
-                    setSummary(r.summary);
+                    setSummary(r['texts']);
                 })
             })
             .then(() => {
                 setLoading(false);
+                let span = summaryButton.querySelector('.loading.loading-spinner')
+                if (span !== null) summaryButton.removeChild(span)
+                summaryButton.classList.add('btn-disabled');
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -87,8 +101,6 @@ function ReadingPage() {
     // switch to bionic reading mode if bionic mode is clicked
     React.useEffect(() => {
         // get content from document with id 'content'
-        const content = document.getElementById('content').innerText
-        console.log(content)
 
         // get top side button of id 'summar  y'
         const text_card = document.getElementById('doc')
@@ -99,41 +111,63 @@ function ReadingPage() {
         const handleTopSideButtonClick = () => {
             console.log('Bionic Mode button clicked')
             // setLoading(true);
+            if (!isBionicMode) {
+                //  bionic reading mode
+                const bionic_text = bionicReading(content, { highlightTag: 'strong' })
 
-            //  bionic reading mode
-            const bionic_text = bionicReading(content, { highlightTag: 'strong' })
+                console.log(bionic_text)
+                // setContent(bionic_text)
+                setCurrentText(bionic_text)
+                setIsBionicMode(true)
 
-            console.log(bionic_text)
-            setCurrentText(bionic_text)
+            //     button -> outline button
+                bionicButton.classList.add('btn-outline')
+                bionicButton.classList.replace('text-info', 'text-primary')
+            } else {
+                setCurrentText(content)
+                setIsBionicMode(false)
+
+                bionicButton.classList.remove('btn-outline')
+                bionicButton.classList.replace('text-primary', 'text-info')
+            //
+            }
+
         }
         bionicButton.addEventListener('click', handleTopSideButtonClick)
     });
 
     return (
         <div className='mx-auto my-0 h-fit'>
-            <TitleCard id='doc' title='Document Title' TopSideButtons={'Bionic Mode'}>
-                <div className='card-body max-h-[26rem] text-justify w-[48rem] h-[26rem]
+            <TitleCard id='doc' title={contentTitle} TopSideButtons={'Bionic Mode'}>
+                <div className='card-body max-h-[26rem] text-justify w-full h-[26rem] py-1
                                 overflow-y-auto scroll-smooth scroll-p-1'>
-                    <article id={'content'} className='prose'>
-                        <p dangerouslySetInnerHTML={{__html: currentText}}>
-                        </p>
+                    <article id={'content'} className='prose max-w-[48rem]'>
+                        {currentText !== '' ? <p dangerouslySetInnerHTML={{__html: currentText}}></p> 
+                                            : <p>{content}</p>}
+                        {/*<p dangerouslySetInnerHTML={{__html: currentText}}></p>*/}
+                        {/*<p dangerouslySetInnerHTML={{__html: content}}></p>*/}
                     </article>
                 </div>
             </TitleCard>
 
             <TitleCard id='summary' title='Summary' TopSideButtons={'Summarize'}>
                 {summary !== '' ?
-                    <div className="card-action float-right copy-button">
-                        <button className="btn btn-sm btn-info text-primary" onClick={handleCopyButtonClick}>
+                    <div className="card-action float-right copy-button
+                                    tooltip tooltip-warning hover:tooltip-open hover:tooltip-top z-10"
+                         data-tip={'Copy to Clipboard'}>
+                        <button className="btn btn-sm btn-info text-primary"
+                                onClick={handleCopyButtonClick} >
                             <ClipboardDocumentIcon className='h-5 w-5'/>
                         </button>
                     </div>
                     : ''}
-                <div className='card-body items-center max-h-[26rem] text-justify
+                <div className='card-body items-center max-h-[24rem] text-justify w-[48rem] py-1
                                     overflow-y-auto scroll-smooth scroll-p-1'>
                     <article className='prose max-w-4xl'>
                         <p>
-                            {loading ? 'Loading summary...' : summary}
+                            {(loading && summary ==='')
+                                ? <progress className="progress progress-primary w-64"></progress>
+                                : summary}
 
                         </p>
                     </article>
