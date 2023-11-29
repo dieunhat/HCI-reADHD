@@ -30,3 +30,16 @@
     height: 120px;
     animation: spin 2s linear infinite;
 }
+
+audio{
+    width: 18%
+}
+
+audio::-webkit-media-controls-time-remaining-display,
+audio::-webkit-media-controls-current-time-display,
+/*audio::-webkit-media-controls-panel,*/
+/*audio::-webkit-media-controls-play-button,*/
+audio::-webkit-media-controls-timeline,
+audio::-webkit-media-controls-volume-slider-container {
+    display: none !important;
+}

@@ -72,7 +72,7 @@ function ReadingPage() {
         const content = document.getElementById('content').innerText
         console.log(content)
 
-        // get top side button of id 'summar  y'
+        // get top side button of id 'summary'
         const text_card = document.getElementById('doc')
         if (!text_card) return
 
@@ -93,6 +93,9 @@ function ReadingPage() {
 
     return (
         <div className='max-w-6xl mx-auto my-0 h-fit'>
+            <audio controls autoPlay={true} loop id='audio'>
+                <source src={'/background-music.mp3'} type={'audio/mpeg'}/>
+            </audio>
             <TitleCard id='doc' title='Document Title' TopSideButtons={'Bionic Mode'}>
                 <div className='card-body items-center max-h-[26rem] text-justify
                                 overflow-y-auto scroll-smooth scroll-p-1'>
