@@ -1,8 +1,10 @@
 import TitleCard from "../../components/Cards/TitleCard";
 import React from "react";
+import { bionicReading } from 'bionic-reading';
 
 function ReadingPage() {
     const [summary, setSummary] = React.useState('')
+    const [currentText, setCurrentText] = React.useState('')
     const [loading, setLoading] = React.useState(false)
 
     // get summary of content from backend if top side button of id = 'summary' is clicked
@@ -11,7 +13,7 @@ function ReadingPage() {
         const content = document.getElementById('content').innerText
         console.log(content)
 
-        // get top side button of id 'summary'
+        // get top side button of id 'summar  y'
         const summary_card = document.getElementById('summary')
         if (!summary_card) return
 
@@ -47,6 +49,31 @@ function ReadingPage() {
         summaryButton.addEventListener('click', handleTopSideButtonClick)
     });
 
+    // switch to bionic reading mode if bionic mode is clicked
+    React.useEffect(() => {
+        // get content from document with id 'content'
+        const content = document.getElementById('content').innerText
+        console.log(content)
+
+        // get top side button of id 'summar  y'
+        const text_card = document.getElementById('doc')
+        if (!text_card) return
+
+        const bionicButton = text_card.querySelector('.card-title .card-action button')
+        
+        const handleTopSideButtonClick = () => {
+            console.log('Bionic Mode button clicked')
+            // setLoading(true);
+
+            //  bionic reading mode
+            const bionic_text = bionicReading(content, { highlightTag: 'strong' })
+
+            console.log(bionic_text)
+            setCurrentText(bionic_text)
+        }
+        bionicButton.addEventListener('click', handleTopSideButtonClick)
+    });
+
     return (
         <div className='max-w-6xl mx-auto my-0 h-fit'>
             <TitleCard id='doc' title='Document Title' TopSideButtons={'Bionic Mode'}>
@@ -56,8 +83,7 @@ function ReadingPage() {
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus ullamcorper volutpat. Sed blandit ligula ac interdum vulputate. Nulla vel orci congue, vehicula sapien at, iaculis ligula. Ut condimentum pharetra massa, non scelerisque arcu consectetur sit amet. In dignissim efficitur leo a convallis. Fusce placerat ac erat vitae imperdiet. Fusce in facilisis ante, in venenatis magna. Vestibulum ante felis, facilisis quis ex vitae, eleifend tempus sem. Curabitur eu felis vitae odio mollis pharetra at sit amet lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aliquam erat volutpat. In dignissim nisl nibh, non faucibus augue iaculis eget. In auctor iaculis leo ac facilisis. Maecenas commodo porttitor diam in imperdiet.
                         </p>
-                        <p>
-                            Vestibulum sit amet facilisis nulla, sit amet commodo magna. Donec dignissim pellentesque rutrum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque fringilla massa id tellus gravida viverra. Quisque sagittis ligula augue, facilisis convallis enim pulvinar ut. In nec ex vel nisi aliquam volutpat vitae vel nisi. Integer at venenatis massa. Cras at nunc vel risus lobortis lacinia. Maecenas sagittis lacus non accumsan commodo. Sed dapibus odio sit amet libero mollis, sit amet pretium leo faucibus. Duis risus tellus, tempus vitae magna a, congue auctor odio. Quisque gravida, mauris sed eleifend venenatis, risus dolor sollicitudin est, ullamcorper semper augue magna eu libero.
+                        <p dangerouslySetInnerHTML={{__html: currentText}}>
                         </p>
                     </article>
                 </div>
