@@ -150,7 +150,7 @@ function ReadingPage() {
                     </article>
                 </div>
                 {/* upload new text or file button -> redirect to welcome page */}
-                <Link to="/app/welcome" className="w-full flex flex-row align-center mt-3">
+                <Link to="/app/welcome" className="w-full flex flex-row align-center mt-5">
                     <button className="btn btn-success btn-outline btn-sm w-64 mx-auto">Upload New Text</button>
                 </Link>
             </TitleCard>

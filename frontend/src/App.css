@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+::-moz-selection {
+  background: #63A3B2;
+  color: #F1F0E8;
+}
+::-webkit-selection {
+  background: #63A3B2;
+  color: #F1F0E8;
+}
+::selection {
+  background: #63A3B2;
+  color: #F1F0E8;
+}

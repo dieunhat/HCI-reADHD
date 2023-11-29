@@ -4,7 +4,6 @@ import { setPageTitle } from '../../features/common/headerSlice'
 import TextareaAutosize from 'react-textarea-autosize';
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 function InternalPage(){
 
@@ -17,7 +16,7 @@ function InternalPage(){
     const [currentButtonAddText, setCurrentButtonAddText] = useState(true)
 
     useEffect(() => {
-        dispatch(setPageTitle({ title : ""}))
+        dispatch(setPageTitle({ title : "Welcome to ADHD Help Kit"}))
       }, [])
 
     const handleAddText = () => {
@@ -93,24 +92,16 @@ function InternalPage(){
                 .catch((error) => {
                     console.error('Error:', error);
                 })
-            // axios.post(
-            //     '/api/read_file',
-            //     formData,
-            //     {headers: {'Content-Type': 'multipart/form-data'}}
-            // ).then(response => {
-            //     console.log(response)
-            //     console.log("redirecting to reading page")
-            //     redirect('/app/reading')
-            // })
-            //     .catch((error) => {
-            //         console.error('Error:', error);
-            //     })
+
         }
     }
 
+    const screenHeight = window.innerHeight;
+    const elementHeight = screenHeight - 64 - 60;
 
-    return(
-      <div className="w-md h-[37rem] mt-5 bg-base-200">
+    return (
+        <div className="w-md mt-5 bg-base-200" style={{ height: `${elementHeight}px` }}>
+            {/* Content */}
           <div className="flex flex-col gap-1 px-5">
             {/*<TemplatePointers />*/}
               <div className='flex flex-col'>
@@ -123,7 +114,9 @@ function InternalPage(){
               <div className={'w-full inline-block'}>
                   <div className="join">
                       <button onClick={handleAddText}
-                          className={currentButtonAddText ? "btn join-item btn-warning hover:bg-warning hover:border-0 cursor-default no-animation" : "btn join-item btn-info"}>
+                          className={currentButtonAddText 
+                          ? "btn join-item btn-warning hover:bg-warning hover:border-0 cursor-default no-animation" 
+                          : "btn join-item btn-info"}>
                           Add Text
                       </button>
                       <button onClick={handleUploadText}
