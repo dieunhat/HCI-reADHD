@@ -407,3 +407,8 @@ sketch
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/react,visualstudiocode,python,flask,intellij
+backend/temp.py
+backend/temp.py
+backend/sample files/sample.docx
+backend/sample files/sample.pdf
+backend/sample files/sample.txt
