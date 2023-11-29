@@ -2,6 +2,7 @@ import TitleCard from "../../components/Cards/TitleCard";
 import React from "react";
 import { bionicReading } from 'bionic-reading';
 import ClipboardDocumentIcon from "@heroicons/react/24/outline/ClipboardDocumentIcon";
+import { Link } from "react-router-dom";
 
 function ReadingPage() {
     const [content, setContent] = React.useState('')
@@ -138,7 +139,7 @@ function ReadingPage() {
     });
 
     return (
-        <div className='mx-auto my-0 h-fit'>
+        <div className='mx-auto mb-5 h-fit'>
             <TitleCard id='doc' title={<p className="text-success">{contentTitle}</p>} TopSideButtons={'Bionic Mode'}>
                 <div className='card-body max-h-[26rem] text-justify w-full h-[26rem] py-1
                                 overflow-y-auto scroll-smooth scroll-p-1'>
@@ -146,10 +147,12 @@ function ReadingPage() {
                         {currentText !== '' ? <div dangerouslySetInnerHTML={{__html: currentText}}></div> 
                                             : <div dangerouslySetInnerHTML={{__html: content.replace(/\n/g, '<br>')}}></div>
                         }
-                        {/*<p dangerouslySetInnerHTML={{__html: currentText}}></p>*/}
-                        {/*<p dangerouslySetInnerHTML={{__html: content}}></p>*/}
                     </article>
                 </div>
+                {/* upload new text or file button -> redirect to welcome page */}
+                <Link to="/app/welcome" className="w-full flex flex-row align-center mt-3">
+                    <button className="btn btn-success btn-outline btn-sm w-64 mx-auto">Upload New Text</button>
+                </Link>
             </TitleCard>
 
             <TitleCard id='summary' title='Summary' TopSideButtons={'Summarize'}>
