@@ -1,6 +1,5 @@
 import TitleCard from "../../components/Cards/TitleCard";
 import React from "react";
-import { bionicReading } from "bionic-reading";
 import ClipboardDocumentIcon from "@heroicons/react/24/outline/ClipboardDocumentIcon";
 import { Link } from "react-router-dom";
 import checkAuth from "../../app/auth";
@@ -11,7 +10,6 @@ const token = checkAuth();
 function ReadingPage() {
   const [content, setContent] = React.useState("");
   const [contentTitle, setContentTitle] = React.useState("");
-  const [isBionicMode, setIsBionicMode] = React.useState(false);
 
   // get content from read_text endpoint
   React.useEffect(() => {
@@ -38,22 +36,7 @@ function ReadingPage() {
   });
 
   const [summary, setSummary] = React.useState("");
-  const [currentText, setCurrentText] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-
-  // title of document: editable
-  React.useEffect(() => {
-    //     get title of document
-    const title = document
-      .getElementById("doc")
-      .querySelector(".card-title .title-text");
-    //     make title editable
-    title.contentEditable = true;
-    //     add event listener to save title on blur
-    title.addEventListener("blur", () => {
-      console.log("Title changed");
-    });
-  });
 
   // get summary of content from backend if top side button of id = 'summary' is clicked
   React.useEffect(() => {
@@ -92,10 +75,10 @@ function ReadingPage() {
           });
         })
         .then(() => {
-          setLoading(false);
           let span = summaryButton.querySelector(".loading.loading-spinner");
           if (span !== null) summaryButton.removeChild(span);
           summaryButton.classList.add("btn-disabled");
+          setLoading(false);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -109,52 +92,9 @@ function ReadingPage() {
     navigator.clipboard.writeText(summary).then((r) => {});
   };
 
-  // switch to bionic reading mode if bionic mode is clicked
-  React.useEffect(() => {
-    // get content from document with id 'content'
-
-    // get top side button of id 'summar  y'
-    const text_card = document.getElementById("doc");
-    if (!text_card) return;
-
-    const bionicButton = text_card.querySelector(
-      ".card-title .card-action button"
-    );
-
-    const handleTopSideButtonClick = () => {
-      console.log("Bionic Mode button clicked");
-      // setLoading(true);
-      if (!isBionicMode) {
-        //  bionic reading mode
-        const bionic_text = bionicReading(content, { highlightTag: "strong" });
-
-        console.log(bionic_text);
-        // setContent(bionic_text)
-        setCurrentText(bionic_text);
-        setIsBionicMode(true);
-
-        //     button -> outline button
-        bionicButton.classList.add("btn-outline");
-        bionicButton.classList.replace("text-info", "text-primary");
-      } else {
-        setCurrentText(content.replace(/\n/g, "<br>"));
-        setIsBionicMode(false);
-
-        bionicButton.classList.remove("btn-outline");
-        bionicButton.classList.replace("text-primary", "text-info");
-        //
-      }
-    };
-    bionicButton.addEventListener("click", handleTopSideButtonClick);
-  });
-
     return (
-        <div className='mx-auto mb-5 h-fit'>
-            <audio controls autoPlay={true} loop id='audio'>
-                <source src={'/background-music.mp3'} type={'audio/mpeg'}/>
-            </audio>
-
-            <ReadingPanel content={currentText !== '' ? currentText : content.replace(/\n/g, '<br>')} contentTitle={contentTitle}/>
+        <div className='mx-auto h-fit'>
+            <ReadingPanel content={content.replace(/\n/g, '<br>')} contentTitle={contentTitle}/>
 
       {token ? (
         <TitleCard id="summary" title="Summary" TopSideButtons={"Summarize"}>
@@ -194,9 +134,9 @@ function ReadingPage() {
           <div className="card-body text-center py-1 w-[48rem]">
             <p>
               Please 
-                {" "}<Link to={'/login'} className="text-success font-bold">Login</Link>{" "}
+                {" "}<Link to={'/login'} className="text-success-content font-bold">Login</Link>{" "}
                   or 
-                {" "}<Link to={"/register"} className="text-success font-bold">Register</Link>{" "}
+                {" "}<Link to={"/register"} className="text-success-content font-bold">Register</Link>{" "}
               to summarize text.
             </p>
           </div>
