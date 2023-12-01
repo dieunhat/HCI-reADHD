@@ -55,7 +55,7 @@ function Header() {
 
     return (
         <>
-            <div className="navbar flex justify-between bg-info z-10 shadow-md px-5">
+            <div className="navbar flex justify-between bg-info z-10 shadow-md md:px-5 max-md:px-1">
                     <div className="navbar-start dropdown">
                         <div
                             tabIndex={0}
@@ -68,7 +68,7 @@ function Header() {
                     </div>
                     
                 <div className="navbar-center">
-                <h1 className="text-2xl font-semibold ml-2">{pageTitle}</h1>
+                    <h1 className="text-2xl font-semibold ml-2">{pageTitle}</h1>
                 </div>
 
                 <div className="navbar-end">
@@ -97,7 +97,7 @@ function Header() {
                     {token ? (
                         <div>
                             <button
-                                className="btn btn-ghost ml-4  btn-circle"
+                                className="btn btn-ghost md:ml-4 btn-circle"
                                 onClick={() => openNotification()}
                             >
                                 <div className="indicator">
@@ -110,7 +110,7 @@ function Header() {
                                 </div>
                             </button>
 
-                            <div className="dropdown dropdown-end ml-4">
+                            <div className="dropdown dropdown-end md:ml-4">
                                 <label
                                     tabIndex={0}
                                     className="btn btn-ghost btn-circle bordered avatar"
@@ -142,14 +142,14 @@ function Header() {
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-row gap-4 ml-5">
+                        <div className="flex flex-row md:gap-4 max-md:gap-1 md:ml-5 max-md:ml-1">
                             <Link to={"/register"}>
-                                <button className="btn btn-success btn-outline  btn-sm">
+                                <button className="btn btn-success-content text-success-content bg-transparent border-success-content hover:btn-success hover:text-base-100 btn-sm max-md:hidden">
                                     Register
                                 </button>
                             </Link>
                             <Link to={"/login"}>
-                                <button className="btn btn-success btn-sm">
+                                <button className="btn btn-error text-info btn-sm">
                                     Login
                                 </button>
                             </Link>

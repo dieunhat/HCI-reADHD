@@ -43,7 +43,7 @@ def read_text():
     texts = text_file_processer.read_text(input_text)
 
     response = {
-        'title': 'text',
+        'title': 'Untitled',
         'texts': texts,
     } 
 

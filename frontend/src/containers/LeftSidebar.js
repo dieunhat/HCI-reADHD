@@ -1,7 +1,6 @@
 import routes from "../routes/sidebar";
 import { NavLink, Routes, Link, useLocation } from "react-router-dom";
 import SidebarSubmenu from "./SidebarSubmenu";
-import MenuIcon from "@heroicons/react/24/outline/Bars4Icon";
 import { useDispatch } from "react-redux";
 import checkAuth from "../app/auth";
 
@@ -18,14 +17,14 @@ function LeftSidebar() {
                 {/*<button className="btn btn-ghost bg-none  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute" onClick={() => close()}>*/}
                 {/*    <MenuIcon className="h-5 inline-block w-5"/>*/}
                 {/*</button>*/}
-                <li className="mb-2 font-semibold text-xl">
+                <li className="mb-2 font-semibold text-lg">
                     <Link to={"/welcome"}>
                         <img
                             className="mask mask-squircle w-10"
                             src="/logo192.png"
-                            alt="DashWind Logo"
+                            alt="reADHD logo"
                         />
-                        ADHD Help Kit
+                        reADHD
                     </Link>
                 </li>
                 {token ? (
