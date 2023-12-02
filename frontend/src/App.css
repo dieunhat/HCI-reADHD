@@ -49,3 +49,8 @@
   background: #63A3B2;
   color: #F1F0E8;
 }
+
+:root::highlight(example) {
+  background: #FBD178;
+  color: #0B0A0A;
+}
