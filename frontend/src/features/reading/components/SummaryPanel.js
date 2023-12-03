@@ -22,8 +22,10 @@ function SummaryPanel({ content }) {
 
         if (summary !== "") {
             summaryButton.classList.add("btn-disabled");
-            let span = summaryButton.querySelector(".loading.loading-spinner.loading-xs");
-            if (span !== null) summaryButton.removeChild(span);
+            
+            let div = summaryButton.childNodes[0];
+            let span = div.querySelector(".loading.loading-spinner.loading-xs");
+            if (span !== null) div.removeChild(span);
 
             // summary_card.classList.add("collapse-open");
         }
@@ -33,8 +35,9 @@ function SummaryPanel({ content }) {
             // add child element span with class 'loading loading-spinner' to button
             let span = document.createElement("span");
             span.classList.add("loading", "loading-spinner", 'loading-xs');
-            if (summaryButton.childNodes.length === 1) {
-                summaryButton.appendChild(span);
+            let div = summaryButton.childNodes[0];
+            if (div.childNodes.length === 2) {
+                div.appendChild(span);
             }
 
             fetch("/api/summarize", {

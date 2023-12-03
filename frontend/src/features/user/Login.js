@@ -6,26 +6,55 @@ import InputText from "../../components/Input/InputText";
 
 function Login() {
     const INITIAL_LOGIN_OBJ = {
+        username: "",
         password: "",
-        emailId: "",
     };
 
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [errorUsername, setErrorUsername] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
     const [loginObj, setLoginObj] = useState(INITIAL_LOGIN_OBJ);
 
     const submitForm = (e) => {
         e.preventDefault();
         setErrorMessage("");
 
-        if (loginObj.emailId.trim() === "")
-            return setErrorMessage("Email Id is required! (use any value)");
+        if (loginObj.username.trim() === "")
+            return setErrorUsername("Please enter your username.");
         if (loginObj.password.trim() === "")
-            return setErrorMessage("Password is required! (use any value)");
+            return setErrorPassword("Please enter your password.");
         else {
             setLoading(true);
             // Call API to check user credentials and save token in localstorage
-            localStorage.setItem("token", "DumyTokenHere");
+
+            fetch("/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(loginObj),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.error) {
+                        console.log(data.error);
+                        setErrorUsername(data.error["username"]);
+                        setErrorPassword(data.error["password"]);
+                        setLoading(false);
+                    } else {
+                        localStorage.setItem(loginObj.username, JSON.stringify(data));
+                        setLoading(false);
+                        window.location.href = "/welcome";
+                    }
+                })
+                .catch((err) => {
+                    setErrorMessage(err.message);
+                    setLoading(false);
+                });
+
+            localStorage.setItem(loginObj.username, JSON.stringify(loginObj));
             setLoading(false);
             window.location.href = "/welcome";
         }
@@ -40,7 +69,7 @@ function Login() {
         <div className="min-h-screen bg-base-200 flex items-center">
             <div className="card mx-auto w-full max-w-5xl  shadow-xl">
                 <div className="grid  md:grid-cols-2 grid-cols-1  bg-base-100 rounded-xl">
-                    <div className="">
+                    <div className="max-lg:hidden">
                         <LandingIntro />
                     </div>
                     <div className="py-24 px-10">
@@ -50,13 +79,16 @@ function Login() {
                         <form onSubmit={(e) => submitForm(e)}>
                             <div className="mb-4">
                                 <InputText
-                                    type="emailId"
+                                    type="username"
                                     defaultValue={loginObj.emailId}
-                                    updateType="emailId"
+                                    updateType="username"
                                     containerStyle="mt-4"
-                                    labelTitle="Email Id"
+                                    labelTitle="Username"
                                     updateFormValue={updateFormValue}
                                 />
+                                <ErrorText styleClass="text-sm">
+                                    {errorUsername}
+                                </ErrorText>
 
                                 <InputText
                                     defaultValue={loginObj.password}
@@ -66,6 +98,9 @@ function Login() {
                                     labelTitle="Password"
                                     updateFormValue={updateFormValue}
                                 />
+                                <ErrorText styleClass="text-sm">
+                                    {errorPassword}
+                                </ErrorText>
                             </div>
 
                             <div className="text-right text-primary">

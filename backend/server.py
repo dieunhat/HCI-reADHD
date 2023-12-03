@@ -4,13 +4,20 @@ import os
 from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
 from wsgiref.simple_server import WSGIServer
+from flask_pymongo import PyMongo
 import logging
+import password_processer
 
 import model
 import text_file_processer
 
 app = Flask(__name__)
 # CORS(app, origins="http://localhost:3000", supports_credentials=True, methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+
+# Configure MongoDB connection string
+app.config["MONGO_URI"] = "mongodb://localhost:27017/readhd"
+mongo = PyMongo(app)
+
 
 TEMP_DATA_PATH = 'temp_content/temp.json'
 # create temp_content folder if not exist
@@ -23,7 +30,7 @@ if not os.path.exists(TEMP_DATA_PATH):
 
 @app.route('/api', methods=['GET'])
 def index():
-    return "Hello, World!"
+    return "Hello, World!", 200
 
 
 @app.route('/api/summarize', methods=['POST'])
@@ -32,7 +39,7 @@ def summarize():
     summary = model.summarize(input_text)
     response = jsonify({'texts': summary})
     logging.log(logging.INFO, 'Response:', response)
-    return response
+    return response, 200
 
 
 @app.route('/api/read_text', methods=['POST'])
@@ -51,7 +58,7 @@ def read_text():
     logging.log(logging.INFO, 'Response:', response)
     temp_json = open(TEMP_DATA_PATH, 'w')
     json.dump(response, temp_json)
-    return jsonify(response)
+    return jsonify(response), 200
 
 
 @app.route('/api/read_file', methods=['POST'])
@@ -62,11 +69,11 @@ def read_file():
         print(key)
     if 'file' not in request.files:
         print('No file part')
-        return redirect(request.url)
+        return redirect(request.url), 400
     file = request.files['file']
     if file.filename == '':
         print('No file selected')
-        return redirect(request.url)
+        return redirect(request.url), 400
     if file:
         if file.filename.endswith('.pdf'):
             texts = text_file_processer.read_pdf(file)
@@ -75,7 +82,7 @@ def read_file():
         elif file.filename.endswith('.docx'):
             texts = text_file_processer.read_docx(file)
         else:
-            return jsonify({'error': 'File type not supported.'})
+            return jsonify({'error': 'File type not supported.'}), 400
 
         response = {
             'title': file.filename.split('.')[0],
@@ -86,7 +93,7 @@ def read_file():
         logging.log(logging.INFO, 'Response:', response)
         temp_json = open(TEMP_DATA_PATH, 'w')
         json.dump(response, temp_json)
-        return jsonify(response, {'headers': {'Access-Control-Allow-Origin': '*'}}) 
+        return jsonify(response, {'headers': {'Access-Control-Allow-Origin': '*'}}), 200
 
 
 @app.route('/api/get_content', methods=['GET'])
@@ -94,8 +101,52 @@ def get_content():
     temp_json = open(TEMP_DATA_PATH, 'r')
     response = json.load(temp_json)
     logging.log(logging.INFO, 'Response:', response)
-    return jsonify(response)
+    return jsonify(response), 200
 
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    data = request.json
+    username = data['username']
+    
+    # Check if username already exists
+    existing_user = mongo.db.users.find_one({'username': username})
+    if existing_user:
+        return jsonify({'error': {
+            'username': 'Username already exists.'
+        }}), 400
+    
+    if password_processer.check_valid(data['password'])[0] is False:
+        return jsonify({'error': {
+            'password': password_processer.check_valid(data['password'])[1]
+        }}), 400
+    password = password_processer.hash_password(data['password'])
+    user_data = {
+        'username': username,
+        'password': password,
+        'email': data['email'],
+        'fullname': data['fullname'],
+    }
+    mongo.db.users.insert_one(user_data)
+    return jsonify({"message": "Data inserted."}), 201
+
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data['username']
+    password = password_processer.hash_password(data['password'])
+    user_data = mongo.db.users.find_one({'username': username})
+    if user_data is None:
+        return jsonify({'error': {
+            'username': 'Username does not exist.'
+        }}), 400
+    if user_data['password'] == password:
+        return jsonify({'message': 'Login successful.'}), 200
+    else:
+        return jsonify({'error': {
+            'password': 'Incorrect password.'
+        }}), 400
 
 if __name__ == '__main__':
     # Debug/Development

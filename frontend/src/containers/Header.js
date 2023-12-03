@@ -92,7 +92,8 @@ function Header() {
                     </select> */}
 
                     {/* Light and dark theme selection toogle **/}
-                    <label className="swap swap-rotate">
+                    <label className="swap swap-rotate tooltip tooltip-bottom tooltip-primary"
+                    data-tip="Change theme">
                         <input
                             type="checkbox"
                             className="theme-controller"
