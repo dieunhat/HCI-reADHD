@@ -16,9 +16,12 @@ def read_pdf(file) -> dict:
     for i in range(num_pages):
         texts.append(reader.pages[i].extract_text())
 
+    # joining all pages by \n
+
+    texts = "\n\n".join(texts)
 
     # return {'title': title, 'num_pages': num_pages, 'pages': pages}
-    return texts
+    return [texts]
 
 
 def read_txt(file) -> dict:

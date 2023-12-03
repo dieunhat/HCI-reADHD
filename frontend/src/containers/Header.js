@@ -55,7 +55,7 @@ function Header() {
 
     return (
         <>
-            <div className="navbar flex justify-between bg-info z-10 shadow-md md:px-5 max-md:px-1">
+            <div className="navbar sticky flex justify-between bg-info z-10 shadow-md md:px-5 max-md:px-1">
                     <div className="navbar-start dropdown">
                         <div
                             tabIndex={0}
