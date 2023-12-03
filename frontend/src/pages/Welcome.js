@@ -105,7 +105,7 @@ function WelcomePage() {
       <div className="drawer-content flex flex-col bg-base-200">
 	  <Header/>
         <main
-          className="flex-1 overflow-y-auto p-5  w-screen max-w-screen-2xl min-w-lg mx-auto"
+          className="flex-1 overflow-y-auto p-5 max-lg:w-screen max-w-screen-2xl min-w-lg mx-auto"
           
         >
           <div
@@ -162,7 +162,7 @@ function WelcomePage() {
                 {/*</Link>*/}
               </div>
               <div
-                className={"min-w-fit w-full max-w-screen-xl w-[48rem] h-full mt-8"}
+                className={"min-w-fit max-lg:w-full max-w-screen-xl w-[48rem] h-full mt-8"}
               >
                 {currentButtonAddText ? (
                   <TextareaAutosize
