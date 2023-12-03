@@ -22,7 +22,7 @@ function SummaryPanel({ content }) {
 
         if (summary !== "") {
             summaryButton.classList.add("btn-disabled");
-            let span = summaryButton.querySelector(".loading.loading-spinner");
+            let span = summaryButton.querySelector(".loading.loading-spinner.loading-xs");
             if (span !== null) summaryButton.removeChild(span);
 
             // summary_card.classList.add("collapse-open");
@@ -32,7 +32,7 @@ function SummaryPanel({ content }) {
             setLoading(true);
             // add child element span with class 'loading loading-spinner' to button
             let span = document.createElement("span");
-            span.classList.add("loading", "loading-spinner");
+            span.classList.add("loading", "loading-spinner", 'loading-xs');
             if (summaryButton.childNodes.length === 1) {
                 summaryButton.appendChild(span);
             }
@@ -74,57 +74,32 @@ function SummaryPanel({ content }) {
         <div
             id="summary"
             className={
-                "collapse collapse-arrow float-left w-full lg:w-[90%] max-w-full h-max bg-base-100 max-md:shadow-md md:shadow-lg my-5"
-            }
-        >
+                "collapse collapse-arrow float-left w-full lg:w-[90%] max-w-full h-max bg-base-100 max-md:shadow-md md:shadow-lg my-5"}>
             <input type="checkbox" />
-            {/* <div className="card-action flex flex-row">
-                <button className="btn btn-sm btn-primary text-info flex-none" >
-                    Summary
-                </button>
-                <button className={"btn btn-sm btn-info text-primary flex-1 hidden"}
-                onClick={handleCopyButtonClick}>
-                    <ClipboardDocumentIcon className="h-5 w-5" />
-                </button>
-                </div> 
-                */}
             <div className="collapse-title lg:text-xl font-medium flex flex-row items-center gap-2">
                 <span>Summary</span>
-                {/* {!loading && summary !== "" ? (
-                    <button
-                        className={"btn btn-info btn-xs btn-square self-end"}
-                        onClick={handleCopyButtonClick}
-                    >
-                        <ClipboardDocumentIcon className="h-5 w-5" />
-                    </button>
-                ) : (
-                    ""
-                )} */}
-                
             </div>
 
             <div className="collapse-content w-full bg-base-100">
                 {token ? (
                     <div className="items-center h-fit text-justify py-1">
-                        {/* <button id='summary-button' className="btn btn-sm btn-primary text-info flex-none" >
-                    Summary
-                </button> */}
                         <article className="prose max-w-4xl">
                             <p>
                                 {!loading && summary !== "" ?(
-                                  <div><button
-                                  className={"btn btn-info btn-xs btn-square self-end"}
-                                  onClick={handleCopyButtonClick}
-                              >
-                                  <ClipboardDocumentIcon className="h-5 w-5" />
-                              </button>
-                              {summary}
-                              </div>
-                                ): (
-                                  <progress className="progress progress-primary">
+                                <div className="flex flex-row gap-1">
+                                    <span className="text-sm">{summary}</span>
+                                    <button
+                                    className={"btn btn-info btn-xs btn-square self-start"}
+                                    onClick={handleCopyButtonClick}>
+                                        <ClipboardDocumentIcon className="h-5 w-5" />
+                                    </button>
+                                </div>
+                                ): ( "")}
+                                {loading && summary === "" ? (
+                                    <progress className="progress progress-primary">
                                         Loading summary...
                                     </progress>
-                                )}
+                                ) : ("")}
                             </p>
                         </article>
                     </div>

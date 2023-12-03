@@ -11,6 +11,8 @@ import LeftSidebar from "./LeftSidebar";
 import { NavLink, Routes, Link, useLocation } from "react-router-dom";
 import PageContent from "./PageContent";
 import checkAuth from "../app/auth";
+import { useContext } from 'react';
+import ThemeContext from "../app/theme";
 
 const token = checkAuth();
 
@@ -19,6 +21,12 @@ function Header() {
     const { noOfNotifications, pageTitle } = useSelector(
         (state) => state.header
     );
+
+    const { theme, setTheme } = useContext(ThemeContext);
+
+    const handleThemeChange = (event) => {
+        setTheme(event.target.checked ? 'dark-theme' : 'light-theme');
+      };
 
     const handleClicked = () => {
         const element = document.activeElement;
@@ -88,8 +96,10 @@ function Header() {
                         <input
                             type="checkbox"
                             className="theme-controller"
-                            value="dark-theme"
-                        />
+                            value={theme}
+                            onChange={handleThemeChange}
+                            checked={theme === 'dark-theme'}
+                            />
                         <SunIcon className={"swap-off fill-current w-6 h-6 "} />
                         <MoonIcon className={"swap-on fill-current w-6 h-6 "} />
                     </label>

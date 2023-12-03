@@ -46,7 +46,8 @@ function ReadingTools() {
                     {isAudioPlaying ? (
                         <div className="flex flex-row items-center gap-1 w-full">
                             <SpeakerWaveIcon className="w-6 h-6 lg:mr-2" />
-                            <span className="max-lg:hidden">Audio</span><span className="text-green-600 max-lg:hidden">On</span>
+                            <span className="max-lg:hidden">Audio</span>
+                            <span className="text-green-600 max-lg:hidden">On</span>
                         </div>
                     ) : (
                         <div className="flex flex-row items-center gap-1 w-full">
