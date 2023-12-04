@@ -25,15 +25,18 @@ function SummaryPanel({ content }) {
             return;
         }
 
-        if (summary !== "") {
+        if ((localStorage.getItem("summary") !== null) || (summary !== "")) {
+            setSummary(JSON.parse(localStorage.getItem("summary")));
+
             summaryButton.classList.add("btn-disabled");
             
             let div = summaryButton.childNodes[0];
             let span = div.querySelector(".loading.loading-spinner.loading-xs");
             if (span !== null) div.removeChild(span);
 
-            // summary_card.classList.add("collapse-open");
+            return;
         }
+
         const handleSummaryButtonClick = () => {
             //   console.log("Summary button clicked");
             setLoading(true);
@@ -59,6 +62,7 @@ function SummaryPanel({ content }) {
                     response.json().then((r) => {
                         console.log(r);
                         setSummary(r["texts"]);
+                        localStorage.setItem("summary", JSON.stringify(r["texts"]));
                     });
                 })
                 .then(() => {
@@ -94,7 +98,7 @@ function SummaryPanel({ content }) {
                 {token ? (
                     <div className="items-center h-fit text-justify py-1">
                         <article className="prose max-w-4xl">
-                            <p>
+                            <div>
                                 {!loading && summary !== "" ?(
                                 <div className="flex flex-row gap-2.5">
                                     <span className="text-sm">{summary}</span>
@@ -110,7 +114,7 @@ function SummaryPanel({ content }) {
                                         Loading summary...
                                     </progress>
                                 ) : ("")}
-                            </p>
+                            </div>
                         </article>
                     </div>
                 ) : (
