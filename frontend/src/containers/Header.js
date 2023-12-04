@@ -3,20 +3,24 @@ import { useSelector, useDispatch } from "react-redux";
 import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
 import MoonIcon from "@heroicons/react/24/outline/MoonIcon";
-import SunIcon from "@heroicons/react/24/outline/SunIcon";
-import UserIcon from "@heroicons/react/24/outline/UserIcon";
+import SunIcon from "@heroicons/react/24/solid/SunIcon";
+import UserIcon from "@heroicons/react/24/solid/UserIcon";
+import LogoutIcon from "@heroicons/react/24/outline/ArrowLeftCircleIcon";
+import SettingIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
 import { openRightDrawer } from "../features/common/rightDrawerSlice";
 import { RIGHT_DRAWER_TYPES } from "../utils/globalConstantUtil";
 import LeftSidebar from "./LeftSidebar";
 import { NavLink, Routes, Link, useLocation } from "react-router-dom";
-import PageContent from "./PageContent";
 import checkAuth from "../app/auth";
-import { useContext } from 'react';
+import { useContext } from "react";
 import ThemeContext from "../app/theme";
+import Logo from "../components/Logo";
 
 const token = checkAuth();
+console.log("token:", token);
 
 function Header() {
+    const username = JSON.parse(token)["username"];
     const dispatch = useDispatch();
     const { noOfNotifications, pageTitle } = useSelector(
         (state) => state.header
@@ -25,8 +29,16 @@ function Header() {
     const { theme, setTheme } = useContext(ThemeContext);
 
     const handleThemeChange = (event) => {
-        setTheme(event.target.checked ? 'dark-theme' : 'light-theme');
-      };
+        console.log(event.target.checked);
+        setTheme(event.target.checked ? "dark-theme" : "light-theme");
+        console.log(theme);
+        window.localStorage.setItem("theme", event.target.checked ? "dark-theme" : "light-theme");
+    };
+
+    useEffect(() => { 
+        const storedTheme = window.localStorage.getItem("theme");
+        setTheme(storedTheme ? storedTheme : "light-theme");
+    }, []);
 
     const handleClicked = () => {
         const element = document.activeElement;
@@ -64,17 +76,23 @@ function Header() {
     return (
         <>
             <div className="navbar sticky flex justify-between bg-info z-10 shadow-md md:px-5 max-md:px-1">
-                    <div className="navbar-start dropdown">
-                        <div
-                            tabIndex={0}
-                            role="button"
-                            className="btn btn-primary btn-warning dropdown-toggle"
-                        >
-                            <Bars3Icon className="h-5 inline-block w-5" />
-                        </div>
-                        <LeftSidebar />
+                <div className="navbar-start flex flex-row gap-4">
+                    <div className="dropdown">
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        className="btn btn-primary btn-warning dropdown-toggle"
+                    >
+                        <Bars3Icon className="h-5 inline-block w-5" />
                     </div>
+                    <LeftSidebar />
+                    </div>
+                    <Link to={"/welcome"} className="text-2xl">
+                        <span><Logo /></span>
+                    </Link>
                     
+                </div>
+
                 <div className="navbar-center">
                     <h1 className="text-2xl font-semibold ml-2">{pageTitle}</h1>
                 </div>
@@ -92,17 +110,17 @@ function Header() {
                     </select> */}
 
                     {/* Light and dark theme selection toogle **/}
-                    <label className="swap swap-rotate tooltip tooltip-bottom tooltip-primary"
-                    data-tip="Change theme">
+                    <label className="swap swap-rotate">
                         <input
                             type="checkbox"
-                            className="theme-controller"
+                            className="theme-controller tooltip tooltip-bottom tooltip-primary"
                             value={theme}
                             onChange={handleThemeChange}
-                            checked={theme === 'dark-theme'}
-                            />
-                        <SunIcon className={"swap-off fill-current w-6 h-6 "} />
-                        <MoonIcon className={"swap-on fill-current w-6 h-6 "} />
+                            checked={theme === "dark-theme"}
+                            data-tip="Change theme"
+                        />
+                        <SunIcon className={"swap-off fill-current w-6 h-6"} />
+                        <MoonIcon className={"swap-on fill-current w-6 h-6"}/>
                     </label>
 
                     {token ? (
@@ -121,33 +139,39 @@ function Header() {
                                 </div>
                             </button>
 
-                            <div className="dropdown dropdown-end md:ml-4">
+                            <div className="dropdown dropdown-end md:ml-4 w-fit">
                                 <label
                                     tabIndex={0}
-                                    className="btn btn-ghost btn-circle bordered avatar"
+                                    className=""
                                 >
-                                    <div className="w-7 rounded-full">
-                                        <UserIcon className="h-6 w-6 m-auto self-center" />
+                                    <div className="btn btn-ghost btn-circle rounded-full avatar">
+                                        <UserIcon className="h-6 w-6 self-center" />
                                     </div>
+                                    
                                 </label>
                                 <ul
                                     tabIndex={0}
                                     className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                                 >
-                                    <li className="justify-between">
+                                    <li><span className="font-bold self-center">{username}</span></li>
+                                    <li className="justify-between flex flex-row">
                                         <Link to={"/app/settings-profile"}>
+                                            <div><SettingIcon className="h-6 w-6 self-center" /></div>
                                             Profile Settings
-                                            <span className="badge">New</span>
+                                            {/* <span className="badge">New</span> */}
                                         </Link>
                                     </li>
-                                    <li className="">
+                                    {/* <li className="">
                                         <Link to={"/app/settings-billing"}>
                                             Bill History
                                         </Link>
-                                    </li>
+                                    </li> */}
                                     <div className="divider mt-0 mb-0"></div>
-                                    <li>
-                                        <a onClick={logoutUser}>Logout</a>
+                                    <li className="justify-between">
+                                        <a onClick={logoutUser}>
+                                            <div><LogoutIcon className="h-6 w-6 self-center" /></div>
+                                            Logout
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -155,7 +179,7 @@ function Header() {
                     ) : (
                         <div className="flex flex-row md:gap-4 max-md:gap-1 md:ml-5 max-md:ml-1">
                             <Link to={"/register"}>
-                                <button className="btn btn-success-content text-success-content bg-transparent border-success-content hover:btn-success hover:text-base-100 btn-sm max-md:hidden">
+                                <button className="btn btn-accent text-info btn-sm max-md:hidden">
                                     Register
                                 </button>
                             </Link>

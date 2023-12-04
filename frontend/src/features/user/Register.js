@@ -68,7 +68,8 @@ function Register() {
                         
                         setLoading(false);
                     } else {
-                        localStorage.setItem(registerObj.username, JSON.stringify(registerObj));
+                        console.log('no more error');
+                        localStorage.setItem("token", JSON.stringify(registerObj));
                         setLoading(false);
                         window.location.href = "/login";
                     }
@@ -80,9 +81,9 @@ function Register() {
                     setLoading(false);
                 });
             // localStorage.setItem("token", "DumyTokenHere");
-            localStorage.setItem(registerObj.username, JSON.stringify(registerObj));
-            setLoading(false);
-            window.location.href = "/login";
+            // localStorage.setItem(registerObj.username, JSON.stringify(registerObj));
+            // setLoading(false);
+            // window.location.href = "/login";
         }
     };
 

@@ -1,27 +1,26 @@
-import TemplatePointers from "./components/TemplatePointers"
+import TemplatePointers from "./components/TemplatePointers";
 
-
-
-function LandingIntro(){
-
-    return(
-        <div className="hero min-h-full rounded-l-xl bg-base-200">
-            <div className="hero-content py-12">
-              <div className="max-w-md">
-
-              <h1 className='text-3xl text-center font-bold '><img src="/logo192.png" className="w-12 inline-block mr-2 mask mask-circle" alt="dashwind-logo" />DashWind</h1>
-
-                <div className="text-center mt-12"><img src="./intro.png" alt="Dashwind Admin Template" className="w-48 inline-block"></img></div>
-              
-              {/* Importing pointers component */}
-              <TemplatePointers />
-              
-              </div>
-
+function LandingIntro() {
+    return (
+        <div className="h-[80%] rounded-l-xl bg-base-200">
+            <div className="w-full carousel rounded-box ">
+                <div className="carousel-item w-full">
+                    <img src="background_1.png" className="w-full" />
+                    <div className="flex justify-center w-full py-2 gap-2">
+                </div>
+                </div>
+                <div className="carousel-item w-full">
+                    <img src="background_2.png" className="w-full" />
+                </div>
+                <div className="carousel-item w-full">
+                    <img src="background_3.png" className="w-full" />
+                </div>
+                <div className="carousel-item w-full">
+                    <img src="background_4.png" className="w-full" />
+                </div>
             </div>
-          </div>
-    )
-      
-  }
-  
-  export default LandingIntro
+        </div>
+    );
+}
+
+export default LandingIntro;
