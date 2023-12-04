@@ -7,14 +7,14 @@ const token = checkAuth();
 
 function SummaryPanel({ content }) {
     const [summary, setSummary] = React.useState("");
-    console.log(summary === "");
+    // console.log(summary === "");
     const [loading, setLoading] = React.useState(false);
 
     // get summary of content from backend if top side button of id = 'summary' is clicked
     React.useEffect(() => {
         const summary_card = document.getElementById("summary");
         const summaryButton = document.getElementById("summary-button");
-        console.log(summaryButton);
+        // console.log(summaryButton);
 
         if (!token) {
             summaryButton.classList.add("btn-disabled");
@@ -85,8 +85,8 @@ function SummaryPanel({ content }) {
             id="summary"
             className={
                 "collapse collapse-arrow float-left w-full lg:w-[90%] max-w-full h-max bg-base-100 max-md:shadow-md md:shadow-lg my-5"}>
-            <input type="checkbox" />
-            <div className="collapse-title lg:text-xl font-medium flex flex-row items-center gap-2">
+                        <input type="checkbox" />
+<div className="collapse-title lg:text-xl font-medium flex flex-row items-center gap-2">
                 <span>Summary</span>
             </div>
 

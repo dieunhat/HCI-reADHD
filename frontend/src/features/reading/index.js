@@ -1,11 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import checkAuth from "../../app/auth";
 import ReadingPanel from "./components/ReadingPanel";
 import SummaryPanel from "./components/SummaryPanel";
 import ReadingTools from "./components/ReadingTools";
-import Notes from "./components/Notes";
-import Highlighter from "./components/Highlight";
-import ClearHighlight from "./components/ClearHighlight";
 import Notes from "./components/Notes";
 
 const token = checkAuth();
@@ -13,20 +10,6 @@ const token = checkAuth();
 function ReadingPage() {
   	const [content, setContent] = React.useState("The NDS is a coherent set of standards and principles that combine neurodiversity and user experience design for Learning Management Systems.  ");
   	const [contentTitle, setContentTitle] = React.useState("NDS");
-    let initialNotes = [];
-    const [notes, setNotes] = React.useState(initialNotes); // array of notes
-
-    const addNote = () => {
-        let selection = document.getSelection();
-        let range = selection.getRangeAt(0);
-        let selectedText = range.toString();
-        console.log(selectedText);
-        // if (selectedText === "") return;
-        // if (notes.includes(selectedText)) return;
-        setNotes([...notes, { text: selectedText, range: range }]);
-        console.log(notes);
-    };
-
 
     // get content from read_text endpoint
     React.useEffect(() => {
@@ -42,21 +25,6 @@ function ReadingPage() {
                 response.json().then((r) => {
                     console.log(r);
                     setContent(r["texts"][0]);
-	// get content from read_text endpoint
-	// React.useEffect(() => {
-	//   if (content !== "") return; // if content is not empty, do not fetch again
-	//   fetch("/api/get_content", {
-	//     method: "GET",
-	//     headers: {
-	//       "Content-Type": "application/json",
-	//     },
-	//   })
-	//     .then((response) => {
-	//       console.log(response);
-	//       response.json().then((r) => {
-	//         console.log(r);
-	//         setContent(r["texts"][0]);
-
                     setContentTitle(r["title"]);
                     console.log(content);
 
@@ -68,11 +36,6 @@ function ReadingPage() {
         
     });
 
-    window.onload = function () {
-      const addNoteButton = document.getElementById("addnote-button");
-      addNoteButton.addEventListener("click", addNote);
-    };
-
     return (
         <div className="h-fit w-full grid grid-cols-9 lg:gap-7 lg:px-3 gap-5">
             <audio autoPlay={true} loop id="audio">
@@ -80,7 +43,7 @@ function ReadingPage() {
             </audio>
             <div id="left-reading-tools" className="float-left col-span-2">
                 <SummaryPanel content={content} />
-                <Notes notes={notes} />
+                <Notes />
             </div>
 
             <ReadingPanel content={content} contentTitle={contentTitle} />
