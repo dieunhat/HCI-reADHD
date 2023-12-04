@@ -9,11 +9,8 @@ import Logo from "../components/Logo";
 import { Link } from "react-router-dom";
 import checkAuth from "../app/auth";
 
-let username = "";
 const token = checkAuth();
-if (token) {
-    username = JSON.parse(token)["username"];
-}
+const username = localStorage.getItem("username");
 
 function WelcomePage() {
     const redirect = useNavigate();
