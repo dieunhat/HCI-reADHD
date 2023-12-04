@@ -4,12 +4,15 @@ import ReadingPanel from "./components/ReadingPanel";
 import SummaryPanel from "./components/SummaryPanel";
 import ReadingTools from "./components/ReadingTools";
 import Notes from "./components/Notes";
+import Highlighter from "./components/Highlight";
+import ClearHighlight from "./components/ClearHighlight";
+import Notes from "./components/Notes";
 
 const token = checkAuth();
 
 function ReadingPage() {
-    const [content, setContent] = React.useState("");
-    const [contentTitle, setContentTitle] = React.useState("");
+  	const [content, setContent] = React.useState("The NDS is a coherent set of standards and principles that combine neurodiversity and user experience design for Learning Management Systems.  ");
+  	const [contentTitle, setContentTitle] = React.useState("NDS");
     let initialNotes = [];
     const [notes, setNotes] = React.useState(initialNotes); // array of notes
 
@@ -23,6 +26,7 @@ function ReadingPage() {
         setNotes([...notes, { text: selectedText, range: range }]);
         console.log(notes);
     };
+
 
     // get content from read_text endpoint
     React.useEffect(() => {
@@ -38,6 +42,20 @@ function ReadingPage() {
                 response.json().then((r) => {
                     console.log(r);
                     setContent(r["texts"][0]);
+	// get content from read_text endpoint
+	// React.useEffect(() => {
+	//   if (content !== "") return; // if content is not empty, do not fetch again
+	//   fetch("/api/get_content", {
+	//     method: "GET",
+	//     headers: {
+	//       "Content-Type": "application/json",
+	//     },
+	//   })
+	//     .then((response) => {
+	//       console.log(response);
+	//       response.json().then((r) => {
+	//         console.log(r);
+	//         setContent(r["texts"][0]);
 
                     setContentTitle(r["title"]);
                     console.log(content);

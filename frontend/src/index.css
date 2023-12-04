@@ -48,3 +48,8 @@ audio::-webkit-media-controls-timeline,
 audio::-webkit-media-controls-volume-slider-container {
     display: none !important;
 }
+
+:root::highlight(example)  {
+    background: #FBD178;
+    color: #0B0A0A;
+  }
