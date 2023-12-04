@@ -18,10 +18,7 @@ import Logo from "../components/Logo";
 
 const token = checkAuth();
 console.log("token:", token);
-let username = "";
-if (token) {
-    username = JSON.parse(token)["username"];
-}
+const username = localStorage.getItem("username");
 
 function Header() {
     

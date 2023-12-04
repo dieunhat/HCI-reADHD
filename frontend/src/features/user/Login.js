@@ -47,7 +47,10 @@ function Login() {
                         setLoading(false);
                     } else {
                         console.log("no more error");
-                        localStorage.setItem("token", JSON.stringify(data));
+                        localStorage.setItem("username", data.username);
+                        localStorage.setItem("email", data.email);
+                        localStorage.setItem("fullname", data.fullname);
+                        localStorage.setItem('token', data.username)
                         // localStorage.setItem("username", JSON.stringify(loginObj.username));
                         setLoading(false);
                         window.location.href = "/welcome";
