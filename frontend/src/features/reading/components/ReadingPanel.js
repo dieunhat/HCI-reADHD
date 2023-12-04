@@ -43,7 +43,7 @@ function ReadingPanel({ content, contentTitle }) {
             <div
                 id={"doc"}
                 className={
-                    "card w-full h-max col-span-3 p-4 bg-base-100 max-md:shadow-md md:shadow-lg my-5"
+                    "card w-full h-max col-span-5 p-4 bg-base-100 max-md:shadow-md md:shadow-lg my-5"
                 }
             >
                 

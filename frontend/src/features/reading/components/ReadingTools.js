@@ -27,14 +27,14 @@ function ReadingTools() {
         }
     };
     return (
-        <div className="w-full">
+        <div className="w-full col-span-2">
             <div
                 className="join join-vertical h-max w-max float-right items-right bg-transparent
                          max-md:shadow-md md:shadow-lg my-5"
             >
                 <button
                     id="summary-button"
-                    className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary"
+                    className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary hover:z-10"
                     data-tip={"Click here to summarize the text"}
                 >
                     <div className="flex flex-row items-center gap-1 w-full">
@@ -44,7 +44,7 @@ function ReadingTools() {
                 </button>
                 <button
                     id="audio-button"
-                    className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary"
+                    className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary hover:z-10"
                     onClick={handleAudioButtonClick}
                     data-tip={
                         isAudioPlaying
@@ -69,7 +69,7 @@ function ReadingTools() {
                 </button>
                 <button
                     id="addnote-button"
-                    className="btn btn-info join-item tooltip tooltip-bottom tooltip-primary"
+                    className="btn btn-info join-item tooltip tooltip-bottom tooltip-primary hover:z-10"
                     data-tip="Click here to add a note"
                 >
                     <div className="flex flex-row items-center gap-1 w-full">
@@ -80,7 +80,7 @@ function ReadingTools() {
                 {/* upload new text or file button -> redirect to welcome page */}
                 <Link to="/welcome" 
                 className="w-full join-item">
-                    <button className="btn btn-info tooltip tooltip-bottom tooltip-primary"
+                    <button className="btn btn-info join-item tooltip tooltip-bottom tooltip-primary hover:z-10"
                     data-tip="Click here to upload new text">
                         <div className="flex flex-row items-center gap-1">
                             <UploadTextIcon className="w-6 h-6 lg:mr-2" />

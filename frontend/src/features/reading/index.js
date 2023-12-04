@@ -1,6 +1,4 @@
-import TitleCard from "../../components/Cards/TitleCard";
 import React from "react";
-import { Link } from "react-router-dom";
 import checkAuth from "../../app/auth";
 import ReadingPanel from "./components/ReadingPanel";
 import SummaryPanel from "./components/SummaryPanel";
@@ -58,11 +56,11 @@ function ReadingPage() {
     };
 
     return (
-        <div className="h-fit w-full grid grid-cols-5 lg:gap- lg:px-3 gap-5">
+        <div className="h-fit w-full grid grid-cols-9 lg:gap-7 lg:px-3 gap-5">
             <audio autoPlay={true} loop id="audio">
                 <source src={"/background-music.mp3"} type={"audio/mpeg"} />
             </audio>
-            <div id="left-reading-tools" className="float-left">
+            <div id="left-reading-tools" className="float-left col-span-2">
                 <SummaryPanel content={content} />
                 <Notes notes={notes} />
             </div>

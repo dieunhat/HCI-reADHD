@@ -12,13 +12,18 @@ function SummaryPanel({ content }) {
 
     // get summary of content from backend if top side button of id = 'summary' is clicked
     React.useEffect(() => {
-        if (!token) return;
-        // get top side button of id 'summary'
         const summary_card = document.getElementById("summary");
-        if (!summary_card) return;
-
         const summaryButton = document.getElementById("summary-button");
-        // console.log(summaryButton);
+        console.log(summaryButton);
+
+        if (!token) {
+            summaryButton.classList.add("btn-disabled");
+            return;
+        }
+        // get top side button of id 'summary'
+        if (!summary_card) {
+            return;
+        }
 
         if (summary !== "") {
             summaryButton.classList.add("btn-disabled");
@@ -58,6 +63,8 @@ function SummaryPanel({ content }) {
                 })
                 .then(() => {
                     if (summary !== "") {
+                        summaryButton.classList.add("btn-disabled");
+                        summary_card.classList.add("collapse-open");
                     }
                     setLoading(false);
                 })
@@ -89,7 +96,7 @@ function SummaryPanel({ content }) {
                         <article className="prose max-w-4xl">
                             <p>
                                 {!loading && summary !== "" ?(
-                                <div className="flex flex-row gap-1">
+                                <div className="flex flex-row gap-2.5">
                                     <span className="text-sm">{summary}</span>
                                     <button
                                     className={"btn btn-info btn-xs btn-square self-start"}
@@ -107,12 +114,12 @@ function SummaryPanel({ content }) {
                         </article>
                     </div>
                 ) : (
-                    <div className="collapse-content text-center py-1 w-32">
+                    <div className="text-center text-neutral">
                         <p>
                             Please{" "}
                             <Link
                                 to={"/login"}
-                                className="text-success-content font-bold"
+                                className="text-error font-bold"
                             >
                                 Login
                             </Link>{" "}

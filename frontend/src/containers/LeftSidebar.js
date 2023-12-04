@@ -17,7 +17,7 @@ function LeftSidebar() {
                 {/*<button className="btn btn-ghost bg-none  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute" onClick={() => close()}>*/}
                 {/*    <MenuIcon className="h-5 inline-block w-5"/>*/}
                 {/*</button>*/}
-                <li className="mb-2 font-semibold text-lg">
+                {/* <li className="mb-2 font-semibold text-lg">
                     <Link to={"/welcome"}>
                         <img
                             className="mask mask-squircle w-10"
@@ -26,7 +26,7 @@ function LeftSidebar() {
                         />
                         reADHD
                     </Link>
-                </li>
+                </li> */}
                 {token ? (
                     routes.map((route, k) => {
                         return (
