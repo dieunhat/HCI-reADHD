@@ -142,7 +142,10 @@ def login():
             'username': 'Username does not exist.'
         }}), 400
     if user_data['password'] == password:
-        return jsonify({'message': 'Login successful.'}), 200
+        return jsonify({'message': 'Login successful.',
+                        'username': user_data['username'],
+                        'fullname': user_data['fullname'],
+                        'email': user_data['email']}), 200
     else:
         return jsonify({'error': {
             'password': 'Incorrect password.'

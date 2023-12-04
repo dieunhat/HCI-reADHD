@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import LandingIntro from "./LandingIntro";
 import ErrorText from "../../components/Typography/ErrorText";
 import InputText from "../../components/Input/InputText";
+import Logo from "../../components/Logo";
 
 function Login() {
     const INITIAL_LOGIN_OBJ = {
@@ -44,7 +45,9 @@ function Login() {
                         setErrorPassword(data.error["password"]);
                         setLoading(false);
                     } else {
-                        localStorage.setItem(loginObj.username, JSON.stringify(data));
+                        console.log("no more error");
+                        localStorage.setItem("token", JSON.stringify(data));
+                        // localStorage.setItem("username", JSON.stringify(loginObj.username));
                         setLoading(false);
                         window.location.href = "/welcome";
                     }
@@ -54,9 +57,9 @@ function Login() {
                     setLoading(false);
                 });
 
-            localStorage.setItem(loginObj.username, JSON.stringify(loginObj));
-            setLoading(false);
-            window.location.href = "/welcome";
+            // localStorage.setItem("token", JSON.stringify(loginObj));
+            // setLoading(false);
+            // window.location.href = "/welcome";
         }
     };
 
@@ -73,6 +76,9 @@ function Login() {
                         <LandingIntro />
                     </div>
                     <div className="py-24 px-10">
+                        <h1 className="text-6xl font-bold mb-6 text-center">
+                            <Logo />
+                        </h1>
                         <h2 className="text-2xl font-semibold mb-2 text-center">
                             Login
                         </h2>
@@ -127,7 +133,7 @@ function Login() {
                             <div className="text-center mt-4">
                                 Don't have an account yet?{" "}
                                 <Link to="/register">
-                                    <span className="  inline-block  hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
+                                    <span className="inline-block hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
                                         Register
                                     </span>
                                 </Link>
