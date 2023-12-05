@@ -84,6 +84,9 @@ function WelcomePage() {
                     console.log(response);
                     response.json().then((r) => {
                         console.log(r);
+                        localStorage.removeItem("summary");
+                        localStorage.removeItem("notes");
+                        localStorage.setItem("isDocSaved", false)
                         console.log("redirecting to reading page");
                         redirect("/app/reading");
                     });

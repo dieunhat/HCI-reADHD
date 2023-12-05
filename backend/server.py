@@ -185,29 +185,11 @@ def upload_file():
 
 @app.route('/api/get_content', methods=['GET'])
 def get_content():
-    # username = request.args.get('username')
-    # print(request, request.json, request.headers)
-    # if 'username' in request.json:
-    #     username = request.json['username']
-    # print(username)
-    # print(f'temp_content/temp{username}.json')
-    # temp_json = open(f'temp_content/temp{username}.json', 'r')
-    # response = json.load(temp_json)
-    # logging.log(logging.INFO, 'Response:', response)
-    # # return jsonify(response, {'headers': {'Access-Control-Allow-Origin': '*'}}), 200
-    # res = make_response(jsonify(response), 200)
-    # res.headers['Access-Control-Allow-Origin'] = '*'
-    # return res
-
     username = request.args.get('username')
     if username is None:
         username = ''
     print(username)
     # Check if username exists
-    if not check_user_exist(username):
-        return jsonify({'error': {
-            'username': 'Username does not exist.'
-        }}), 400
     print(f'temp_content/temp{username}.json')
     temp_json = open(f'temp_content/temp{username}.json', 'r')
     response = json.load(temp_json)

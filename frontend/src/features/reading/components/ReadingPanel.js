@@ -159,17 +159,7 @@ function ReadingPanel({ content, contentTitle }) {
                     </p>
 
                     <div className="navbar-end flex flex-row  w-full gap-3">
-                        {/* <button
-                            className={
-                            "btn btn-sm btn-primary" +
-                            (isBionicMode
-                            ? " btn-outline text-primary"
-                            : " text-info")
-                            }
-                            onClick={handleBionicButtonClick}
-                        >
-                            Bionic Mode
-                        </button> */}
+
                         <div className="form-control self-center">
                             <label className="label flex gap-1 p-0">
                                 <span className="label-text">Bionic</span>

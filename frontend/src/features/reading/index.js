@@ -35,10 +35,10 @@ function ReadingPage() {
     const getContent = () => {
         setIsLoading(true);
         var api = `/api/get_content`
-        if (username !== null) {
+        if (username !== null && username != "") {
             api += `?username=${username}`
         }
-        fetch(`/api/get_content?username=${username}`, {
+        fetch(api, {
             method: "GET",
 			headers: {
 				'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ function ReadingPage() {
                     console.log(r);
                     setContent(r[0]["texts"][0]);
                     setContentTitle(r[0]["title"]);
-                    console.log(content);
+                    console.log(r[0]["texts"][0]);
 
 					// localStorage.setItem("content", content);
 					// localStorage.setItem("contentTitle", contentTitle);

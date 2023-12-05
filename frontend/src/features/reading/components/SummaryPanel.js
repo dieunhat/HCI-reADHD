@@ -15,10 +15,9 @@ function SummaryPanel({ content }) {
     React.useEffect(() => {
         const summary_card = document.getElementById("summary");
         const summaryButton = document.getElementById("summary-button");
-        // console.log(summaryButton);
 
         if (!token) {
-            summaryButton.classList.add("btn-disabled");
+            console.log(summaryButton);
             return;
         }
         // get top side button of id 'summary'
@@ -26,7 +25,7 @@ function SummaryPanel({ content }) {
             return;
         }
 
-        if ((localStorage.getItem("summary") !== "") || (summary !== "")) {
+        if ((localStorage.getItem("summary") !== null) || (summary !== "")) {
             setSummary(localStorage.getItem("summary"));
 
             summaryButton.classList.add("btn-disabled");
