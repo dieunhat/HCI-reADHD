@@ -20,8 +20,8 @@ const token = checkAuth();
 console.log("token:", token);
 
 let username = "";
-if (token) {
-    username = token["username"];
+if (localStorage.getItem('username') !== null) {
+    username = localStorage.getItem('username');
 }
 
 // localStorage.setItem("token", "");
@@ -155,7 +155,7 @@ function Header() {
 
                             <div className="dropdown dropdown-end md:ml-4 w-fit">
                                 <label tabIndex={0} className="">
-                                    <div className="btn btn-ghost btn-circle rounded-full avatar">
+                                    <div className="btn btn-ghost btn-circle avatar">
                                         <UserIcon className="h-6 w-6 self-center" />
                                     </div>
                                 </label>

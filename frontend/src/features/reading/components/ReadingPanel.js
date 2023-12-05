@@ -7,7 +7,9 @@ import DecreaseFontSizeIcon from "@heroicons/react/24/outline/MagnifyingGlassMin
 function ReadingPanel({ content, contentTitle }) {
     const [isBionicMode, setIsBionicMode] = React.useState(false);
     const [currentText, setCurrentText] = React.useState(content);
-    const [isDocSaved, setIsDocSaved] = React.useState(localStorage.getItem("isDocSaved") === true);
+    const [isDocSaved, setIsDocSaved] = React.useState(
+        localStorage.getItem("isDocSaved") === true
+    );
     const [isLoading, setIsLoading] = React.useState(false);
 
     // title of document: editable
@@ -68,29 +70,34 @@ function ReadingPanel({ content, contentTitle }) {
             console.log("Save button not found");
             return;
         }
-        saveDocButton.addEventListener("click", () => {
-            console.log("Save button clicked");
-            clickSaveButton();
-            saveDocButton.childNodes[0].childNodes[0].classList.add(
-                "text-success-content"
-            );
-            saveDocButton.childNodes[0].childNodes[1].classList.add(
-                "text-success-content"
-            );
-            setTimeout(() => {
-                saveDocButton.childNodes[0].childNodes[0].classList.remove(
+        saveDocButton.addEventListener(
+            "click",
+            () => {
+                console.log("Save button clicked");
+                clickSaveButton();
+                saveDocButton.childNodes[0].childNodes[0].classList.add(
                     "text-success-content"
                 );
-                saveDocButton.childNodes[0].childNodes[1].classList.remove(
+                saveDocButton.childNodes[0].childNodes[1].classList.add(
                     "text-success-content"
                 );
-            }, 2500);
-        }, []);
+                setTimeout(() => {
+                    saveDocButton.childNodes[0].childNodes[0].classList.remove(
+                        "text-success-content"
+                    );
+                    saveDocButton.childNodes[0].childNodes[1].classList.remove(
+                        "text-success-content"
+                    );
+                }, 2500);
+            },
+            []
+        );
 
         if (isDocSaved) {
             saveDocButton.childNodes[0].childNodes[0].innerText = "Saved";
         } else {
-            saveDocButton.childNodes[0].childNodes[0].innerText = "Save Document";
+            saveDocButton.childNodes[0].childNodes[0].innerText =
+                "Save Document";
         }
     });
 
@@ -145,7 +152,7 @@ function ReadingPanel({ content, contentTitle }) {
                     <p
                         id="doc-title"
                         className={
-                            "title-text navbar-start text-success-content"
+                            "title-text navbar-start text-success-content min-w-[12rem]"
                         }
                     >
                         {contentTitle}
@@ -180,14 +187,14 @@ function ReadingPanel({ content, contentTitle }) {
                             <button
                                 onClick={decreaseDocumentTextSize}
                                 data-tip="Decrease font size"
-                                className="tooltip tooltip-top tooltip-info"
+                                className="btn btn-sm btn-info btn-circle tooltip tooltip-top tooltip-info"
                             >
                                 <DecreaseFontSizeIcon className="w-6 h-6" />
                             </button>
                             <button
                                 onClick={increaseDocumentTextSize}
                                 data-tip={"Increase font size"}
-                                className="tooltip tooltip-top tooltip-info"
+                                className="btn btn-sm btn-info btn-circle tooltip tooltip-top tooltip-info"
                             >
                                 <IncreaseFontSizeIcon className="w-6 h-6" />
                             </button>

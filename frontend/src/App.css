@@ -72,7 +72,7 @@
 
 .btn-circle {
   @apply rounded-full;
-  @apply shadow-none;
+  /* @apply shadow-none; */
 }
 
 .btn-primary {

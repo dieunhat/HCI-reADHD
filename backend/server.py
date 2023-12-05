@@ -124,8 +124,8 @@ def upload_text():
 
     # save content to temp json file
     logging.log(logging.INFO, 'Response:', response)
-    # temp_data_path = f'temp_content/temp{username}.json'
-    temp_data_path = f'temp_content/temp.json'
+    temp_data_path = f'temp_content/temp{username}.json'
+    # temp_data_path = f'temp_content/temp.json'
     if not os.path.exists('temp_content'):
         os.makedirs('temp_content')
     temp_json = open(temp_data_path, 'w')
@@ -174,8 +174,8 @@ def upload_file():
 
         # save content to temp json file
         logging.log(logging.INFO, 'Response:', response)
-        # temp_data_path = f'temp_content/temp{username}.json'
-        temp_data_path = f'temp_content/temp.json'
+        temp_data_path = f'temp_content/temp{username}.json'
+        # temp_data_path = f'temp_content/temp.json'
         if not os.path.exists('temp_content'):
             os.makedirs('temp_content')
         temp_json = open(temp_data_path, 'w')
@@ -199,7 +199,15 @@ def get_content():
     # res.headers['Access-Control-Allow-Origin'] = '*'
     # return res
 
-    temp_json = open(f'temp_content/temp.json', 'r')
+    username = request.args.get('username')
+    print(username)
+    # Check if username exists
+    if not check_user_exist(username):
+        return jsonify({'error': {
+            'username': 'Username does not exist.'
+        }}), 400
+    print(f'temp_content/temp{username}.json')
+    temp_json = open(f'temp_content/temp{username}.json', 'r')
     response = json.load(temp_json)
     logging.log(logging.INFO, 'Response:', response)
     return jsonify(response, {'headers': {'Access-Control-Allow-Origin': '*'}}), 200
@@ -264,7 +272,7 @@ def save_file():
             existing_file['date'] = datetime.datetime.now()
             existing_file['title'] = title
             mongo.db.files.update_one({'_id': _id}, {
-                                    '$set': existing_file})
+                '$set': existing_file})
             return jsonify({"message": "Data updated."}), 200
     # if not exist, create new file
     file_data = {

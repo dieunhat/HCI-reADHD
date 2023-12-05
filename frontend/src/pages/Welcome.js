@@ -9,8 +9,18 @@ import Logo from "../components/Logo";
 import { Link } from "react-router-dom";
 import checkAuth from "../app/auth";
 
-const token = checkAuth();
-const username = localStorage.getItem("username");
+var username = "";
+if (localStorage.getItem("username") != null && localStorage.getItem("username") !== "") {
+    username = localStorage.getItem("username");
+}
+var span_username = null;
+if (username !== "") {
+    span_username = <span>, <span className="font-bold text-success-content">
+        {localStorage.getItem("fullname")}
+        </span></span>;
+} else {
+    span_username = <span></span>;
+}
 
 function WelcomePage() {
     const redirect = useNavigate();
@@ -27,7 +37,7 @@ function WelcomePage() {
             setPageTitle({
                 title: (
                     <div>
-                        Welcome to <Logo />
+                        Welcome to <Logo />{span_username}
                     </div>
                 ),
             })

@@ -24,17 +24,20 @@ function ReadingPage() {
             }
             return;
         }
-
+        if (localStorage.getItem("content") !== null) {
+            setContent(localStorage.getItem("content"));
+            setContentTitle(localStorage.getItem("contentTitle"));
+            return;
+        }
         getContent();
     }, []);
 
     const getContent = () => {
         setIsLoading(true);
-        fetch(`/api/get_content`, {
+        fetch(`/api/get_user_files?username=${username}`, {
             method: "GET",
 			headers: {
-				// 'Content-Type': 'application/json',
-				"Access-Control-Allow-Origin": "*"
+				'Content-Type': 'application/json',
 			},
 			// mode: 'no-cors'
         })
