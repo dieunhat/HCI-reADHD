@@ -27,7 +27,7 @@ if (token) {
 // localStorage.setItem("token", "");
 
 function Header() {
-    // const username = JSON.parse(token)["username"];
+    
     const dispatch = useDispatch();
     const { noOfNotifications, pageTitle } = useSelector(
         (state) => state.header
@@ -39,10 +39,13 @@ function Header() {
         console.log(event.target.checked);
         setTheme(event.target.checked ? "dark-theme" : "light-theme");
         console.log(theme);
-        window.localStorage.setItem("theme", event.target.checked ? "dark-theme" : "light-theme");
+        window.localStorage.setItem(
+            "theme",
+            event.target.checked ? "dark-theme" : "light-theme"
+        );
     };
 
-    useEffect(() => { 
+    useEffect(() => {
         const storedTheme = window.localStorage.getItem("theme");
         setTheme(storedTheme ? storedTheme : "light-theme");
     }, []);
@@ -85,19 +88,20 @@ function Header() {
             <div className="navbar sticky flex justify-between bg-info z-10 shadow-md md:px-5 max-md:px-1">
                 <div className="navbar-start flex flex-row gap-4">
                     <div className="dropdown">
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        className="btn btn-primary btn-warning dropdown-toggle"
-                    >
-                        <Bars3Icon className="h-5 inline-block w-5" />
-                    </div>
-                    <LeftSidebar />
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-primary btn-warning dropdown-toggle"
+                        >
+                            <Bars3Icon className="h-5 inline-block w-5" />
+                        </div>
+                        <LeftSidebar />
                     </div>
                     <Link to={"/welcome"} className="text-2xl">
-                        <span><Logo /></span>
+                        <span>
+                            <Logo />
+                        </span>
                     </Link>
-                    
                 </div>
 
                 <div className="navbar-center">
@@ -127,12 +131,12 @@ function Header() {
                             data-tip="Change theme"
                         />
                         <SunIcon className={"swap-off fill-current w-6 h-6"} />
-                        <MoonIcon className={"swap-on fill-current w-6 h-6"}/>
+                        <MoonIcon className={"swap-on fill-current w-6 h-6"} />
                     </label>
 
                     {token ? (
                         <div>
-                            <button
+                            {/* <button
                                 className="btn btn-ghost md:ml-4 btn-circle"
                                 onClick={() => openNotification()}
                             >
@@ -144,26 +148,29 @@ function Header() {
                                         </span>
                                     ) : null}
                                 </div>
-                            </button>
+                            </button> */}
 
                             <div className="dropdown dropdown-end md:ml-4 w-fit">
-                                <label
-                                    tabIndex={0}
-                                    className=""
-                                >
+                                <label tabIndex={0} className="">
                                     <div className="btn btn-ghost btn-circle rounded-full avatar">
                                         <UserIcon className="h-6 w-6 self-center" />
                                     </div>
-                                    
                                 </label>
                                 <ul
                                     tabIndex={0}
                                     className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                                 >
-                                    <li><span className="font-bold self-center">{username}</span></li>
+                                    <li>
+                                        <span className="font-bold self-center">
+                                            {username}
+                                        </span>
+                                    </li>
+
                                     <li className="justify-between flex flex-row">
                                         <Link to={"/app/settings-profile"}>
-                                            <div><SettingIcon className="h-6 w-6 self-center" /></div>
+                                            <div>
+                                                <SettingIcon className="h-6 w-6 self-center" />
+                                            </div>
                                             Profile Settings
                                             {/* <span className="badge">New</span> */}
                                         </Link>
@@ -176,7 +183,9 @@ function Header() {
                                     <div className="divider mt-0 mb-0"></div>
                                     <li className="justify-between">
                                         <a onClick={logoutUser}>
-                                            <div><LogoutIcon className="h-6 w-6 self-center" /></div>
+                                            <div>
+                                                <LogoutIcon className="h-6 w-6 self-center" />
+                                            </div>
                                             Logout
                                         </a>
                                     </li>

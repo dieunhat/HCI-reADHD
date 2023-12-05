@@ -7,7 +7,10 @@ import { useNavigate } from "react-router-dom";
 import Header from "../containers/Header";
 import Logo from "../components/Logo";
 import { Link } from "react-router-dom";
+import checkAuth from "../app/auth";
 
+const token = checkAuth();
+const username = localStorage.getItem("username");
 
 function WelcomePage() {
     const redirect = useNavigate();
@@ -56,13 +59,14 @@ function WelcomePage() {
         if (currentButtonAddText) {
             // send inputText to backend
             console.log("input text is: " + inputText);
-            fetch("/api/read_text", {
+            fetch("/api/upload_text", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     content: inputText,
+                    username: username,
                 }),
             })
                 .then((response) => {
@@ -82,8 +86,9 @@ function WelcomePage() {
             const formData = new FormData();
             formData.append("file", inputFile);
             formData.append("filename", inputFile.name);
+            formData.append("username", username);
             console.log(formData);
-            fetch("/api/read_file", {
+            fetch("/api/upload_file", {
                 method: "POST",
                 headers: {
                     "Content-Type": "multipart/formdata",

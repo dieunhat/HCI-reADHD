@@ -13,11 +13,12 @@ import CalendarDaysIcon from '@heroicons/react/24/outline/CalendarDaysIcon'
 // import Cog6ToothIcon from '@heroicons/react/24/outline/Cog6ToothIcon'
 import BoltIcon from '@heroicons/react/24/outline/BoltIcon'
 import ChartBarIcon from '@heroicons/react/24/outline/ChartBarIcon'
-import CurrencyDollarIcon from '@heroicons/react/24/outline/CurrencyDollarIcon'
+// import CurrencyDollarIcon from '@heroicons/react/24/outline/CurrencyDollarIcon'
 import InboxArrowDownIcon from '@heroicons/react/24/outline/InboxArrowDownIcon'
 // import UsersIcon from '@heroicons/react/24/outline/UsersIcon'
 // import KeyIcon from '@heroicons/react/24/outline/KeyIcon'
 // import DocumentDuplicateIcon from '@heroicons/react/24/outline/DocumentDuplicateIcon'
+import DocumentIcon from '@heroicons/react/24/outline/InboxStackIcon'
 
 const iconClasses = `h-6 w-6`
 const submenuIconClasses = `h-5 w-5`
@@ -39,9 +40,9 @@ const routes = [
     name: 'Leads', // name that appear in Sidebar
   },
   {
-    path: '/app/transactions', // url
-    icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
-    name: 'Transactions', // name that appear in Sidebar
+    path: '/app/documents', // url
+    icon: <DocumentIcon className={iconClasses}/>, // icon component
+    name: 'Documents', // name that appear in Sidebar
   },
   {
     path: '/app/charts', // url

@@ -21,8 +21,9 @@ function Login() {
         e.preventDefault();
         setErrorMessage("");
 
-        if (loginObj.username.trim() === "")
+        if (loginObj.username.trim() === "") {
             return setErrorUsername("Please enter your username.");
+        }
         if (loginObj.password.trim() === "")
             return setErrorPassword("Please enter your password.");
         else {
@@ -46,7 +47,10 @@ function Login() {
                         setLoading(false);
                     } else {
                         console.log("no more error");
-                        localStorage.setItem("token", JSON.stringify(data));
+                        localStorage.setItem("username", data.username);
+                        localStorage.setItem("email", data.email);
+                        localStorage.setItem("fullname", data.fullname);
+                        localStorage.setItem('token', data.username)
                         // localStorage.setItem("username", JSON.stringify(loginObj.username));
                         setLoading(false);
                         window.location.href = "/welcome";
@@ -57,7 +61,7 @@ function Login() {
                     setLoading(false);
                 });
 
-            // localStorage.setItem("token", JSON.stringify(loginObj));
+            // localStorage.setItem("token", "");
             // setLoading(false);
             // window.location.href = "/welcome";
         }
@@ -69,77 +73,87 @@ function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-base-200 flex items-center">
-            <div className="card mx-auto w-full max-w-5xl  shadow-xl">
-                <div className="grid  md:grid-cols-2 grid-cols-1  bg-base-100 rounded-xl">
-                    <div className="max-lg:hidden">
-                        <LandingIntro />
-                    </div>
-                    <div className="py-24 px-10">
-                        <h1 className="text-6xl font-bold mb-6 text-center">
-                            <Logo />
-                        </h1>
-                        <h2 className="text-2xl font-semibold mb-2 text-center">
+        <div className="min-h-screen bg-base-100 flex items-center">
+            <div className="card card-side card-bordered mx-auto w-full max-w-5xl shadow-xl h-[42rem]">
+                <LandingIntro />
+                {/* <div className="card-body grid md:grid-cols-2 grid-cols-1  bg-base-100 rounded-xl">
+                 */}
+                <div className="card-body min-w-[50%] py-8 px-14 text-center">
+                    {/* <div className="max-lg:hidden">
+                        
+                    </div> */}
+                    <h1 className="text-6xl font-bold my-6 text-center">
+                        <Logo />
+                    </h1>
+                    <form onSubmit={(e) => submitForm(e)}>
+                        <h2 className=" card-title text-3xl font-semibold">
                             Login
                         </h2>
-                        <form onSubmit={(e) => submitForm(e)}>
-                            <div className="mb-4">
-                                <InputText
-                                    type="username"
-                                    defaultValue={loginObj.emailId}
-                                    updateType="username"
-                                    containerStyle="mt-4"
-                                    labelTitle="Username"
-                                    updateFormValue={updateFormValue}
-                                />
-                                <ErrorText styleClass="text-sm">
-                                    {errorUsername}
-                                </ErrorText>
-
-                                <InputText
-                                    defaultValue={loginObj.password}
-                                    type="password"
-                                    updateType="password"
-                                    containerStyle="mt-4"
-                                    labelTitle="Password"
-                                    updateFormValue={updateFormValue}
-                                />
-                                <ErrorText styleClass="text-sm">
-                                    {errorPassword}
-                                </ErrorText>
-                            </div>
-
-                            <div className="text-right text-primary">
-                                <Link to="/forgot-password">
-                                    <span className="text-sm  inline-block  hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
-                                        Forgot Password?
-                                    </span>
-                                </Link>
-                            </div>
-
-                            <ErrorText styleClass="mt-8">
-                                {errorMessage}
+                        <div className="mb-4">
+                            <InputText
+                                type="username"
+                                defaultValue={loginObj.emailId}
+                                updateType="username"
+                                containerStyle="mt-3"
+                                labelTitle="Username"
+                                updateFormValue={updateFormValue}
+                            />
+                            <ErrorText styleClass="text-sm">
+                                {errorUsername}
                             </ErrorText>
+
+                            <InputText
+                                defaultValue={loginObj.password}
+                                type="password"
+                                updateType="password"
+                                containerStyle="mt-2"
+                                labelTitle="Password"
+                                updateFormValue={updateFormValue}
+                            />
+                            <ErrorText styleClass="text-sm">
+                                {errorPassword}
+                            </ErrorText>
+                            <div className="text-right text-primary">
+                            <Link to="/forgot-password">
+                                <span className="text-sm  inline-block  hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
+                                    Forgot Password?
+                                </span>
+                            </Link>
+                        </div>
+                        </div>
+
+                        <ErrorText styleClass="mt-8">{errorMessage}</ErrorText>
+                        <div className="w-full text-center">
                             <button
                                 type="submit"
                                 className={
-                                    "btn mt-2 w-full btn-primary" +
+                                    "btn mt-1 btn-wide btn-primary" +
                                     (loading ? " loading" : "")
                                 }
                             >
                                 Login
                             </button>
+                        </div>
 
-                            <div className="text-center mt-4">
-                                Don't have an account yet?{" "}
-                                <Link to="/register">
-                                    <span className="inline-block hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
-                                        Register
-                                    </span>
-                                </Link>
-                            </div>
-                        </form>
-                    </div>
+                        <div className="text-center mt-4">
+                            Don't have an account yet?{" "}
+                            <Link to="/register">
+                                <span className="inline-block font-bold hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
+                                    Register
+                                </span>
+                            </Link>
+                        </div>
+
+                        <div className="w-full text-center">
+                            <Link to={"/welcome"}>
+                                <button
+                                    className={"btn mt-10 btn-wide btn-error"}
+                                >
+                                    Quick Read as Guest
+                                </button>
+                            </Link>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
