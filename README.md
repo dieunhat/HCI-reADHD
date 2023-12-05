@@ -1,5 +1,4 @@
-# HCI-ADHDHelpKit
-
+# reADHD - Reading Website for people with ADHD
 ## Initialize
 ### Backend
 ```bash
@@ -28,4 +27,3 @@ Separated terminals
 ```bash
     cd backend
     flask run
-```
