@@ -7,25 +7,30 @@ import checkAuth from "../../app/auth";
 
 import axios from 'axios';
 
-const token = checkAuth();
 const username = localStorage.getItem("username");
-
 
 function ReadingPage() {
     const [content, setContent] = React.useState("");
     const [contentTitle, setContentTitle] = React.useState("");
+    const [isLoading, setIsLoading] = React.useState(false);
 
     // get content from read_text endpoint
     React.useEffect(() => {
-        if (content !== "") return; // if content is not empty, do not fetch again
-		if (localStorage.getItem("content") !== null) {
-			setContent(JSON.parse(localStorage.getItem("content")));
-			setContentTitle(JSON.parse(localStorage.getItem("contentTitle")));
-			return;
-		}
-		// const formData = new FormData();
-        // formData.append("username", username);
-		fetch(`/api/get_content?username=${encodeURIComponent(username)}`, {
+        // if content is not empty, do not fetch again
+        if (content !== "") {
+            const localTitle = localStorage.getItem("contentTitle");
+            if (localTitle !== null) {
+                setContentTitle(localTitle);
+            }
+            return;
+        }
+
+        getContent();
+    }, []);
+
+    const getContent = () => {
+        setIsLoading(true);
+        fetch(`/api/get_content`, {
             method: "GET",
 			headers: {
 				// 'Content-Type': 'application/json',
@@ -41,29 +46,25 @@ function ReadingPage() {
                     setContentTitle(r[0]["title"]);
                     console.log(content);
 
-					localStorage.setItem("content", JSON.stringify(r[0]["texts"][0]));
-					localStorage.setItem("contentTitle", JSON.stringify(r[0]["title"]));
-                    localStorage.setItem("file_id", JSON.stringify(r[0]["file_id"]));
+					// localStorage.setItem("content", content);
+					// localStorage.setItem("contentTitle", contentTitle);
+
+                    if('summary' in r[0] && r[0]['summary'] !== null) {
+                        localStorage.setItem("summary", r[0]['summary']);
+                    }
+
+                    if ('notes' in r[0] && r[0]['notes'] !== null) {
+                        localStorage.setItem("notes", r[0]['notes']);
+                    }
 
                     console.log(localStorage);
                 });
             })
             .catch((error) => {
                 console.error("Error:", error);
+                setIsLoading(false);
             });
-		// axios.get("/api/get_content", {
-		// 	json: {'username': username},
-		// 	headers: {'Content-Type': 'application/json'}
-		// }).then((response) => {
-		// 	console.log(response);
-		// 	setContent(response.data["texts"][0]);
-		// 	setContentTitle(response.data["title"]);
-		// 	console.log(content);
-		// }
-		// ).catch((error) => {
-		// 	console.error("Error:", error);
-		// });
-    });
+    }
 
     return (
         <div className="h-fit w-full grid grid-cols-10 lg:gap-7 lg:px-3 gap-5">

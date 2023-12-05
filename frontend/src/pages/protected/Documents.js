@@ -12,7 +12,8 @@ function InternalPage(){
 
 
     return(
-        <Documents />
+        <div className='max-w-screen w-full'><Documents /></div>
+        
     )
 }
 

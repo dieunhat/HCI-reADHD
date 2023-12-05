@@ -35,14 +35,14 @@ const routes = [
     name: 'Dashboard',
   },
   {
-    path: '/app/leads', // url
-    icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
-    name: 'Leads', // name that appear in Sidebar
-  },
-  {
     path: '/app/documents', // url
     icon: <DocumentIcon className={iconClasses}/>, // icon component
     name: 'Documents', // name that appear in Sidebar
+  },
+  {
+    path: '/app/leads', // url
+    icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
+    name: 'Leads', // name that appear in Sidebar
   },
   {
     path: '/app/charts', // url

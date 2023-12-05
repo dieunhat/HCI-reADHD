@@ -6,8 +6,6 @@ import SummaryIcon from "@heroicons/react/24/outline/DocumentTextIcon";
 import NoteIcon from "@heroicons/react/24/outline/PencilSquareIcon";
 import UploadTextIcon from "@heroicons/react/24/outline/ArrowUpTrayIcon";
 import SaveIcon from "@heroicons/react/24/outline/FolderIcon";
-import IncreaseFontSizeIcon from "@heroicons/react/24/outline/MagnifyingGlassPlusIcon";
-import DecreaseFontSizeIcon from "@heroicons/react/24/outline/MagnifyingGlassMinusIcon";
 import checkAuth from "../../../app/auth";
 
 const token = checkAuth();
@@ -21,6 +19,7 @@ function ReadingTools() {
             setIsAudioPlaying(true);
         });
     });
+
     // play or pause audio
     const handleAudioButtonClick = () => {
         const audio = document.getElementById("audio");
@@ -39,8 +38,7 @@ function ReadingTools() {
         const selectedText = range.toString();
         range.deleteContents();
         const span = document.createElement("span");
-        span.style.backgroundColor = "#63A3B2";
-        span.style.color = "white";
+        span.style.backgroundColor = "#FBD178";
         span.appendChild(document.createTextNode(selectedText));
         range.insertNode(span);
     };
@@ -55,7 +53,6 @@ function ReadingTools() {
         span.appendChild(document.createTextNode(selectedText));
         range.insertNode(span);
     };
-
 
     return (
         <div className="col-span-2 max-w-full">
@@ -162,21 +159,20 @@ function ReadingTools() {
                     </div>
                 </button>
                 {/* upload new text or file button -> redirect to welcome page */}
-                
-                    <button
-                        className="btn btn-info join-item tooltip tooltip-bottom tooltip-primary hover:z-10"
-                        data-tip="Click here to upload new text"
-                    >
-                        <Link to="/welcome" className="">
+
+                <button
+                    className="btn btn-info join-item tooltip tooltip-bottom tooltip-primary hover:z-10"
+                    data-tip="Click here to upload new text"
+                >
+                    <Link to="/welcome" className="">
                         <div className="flex flex-row items-center gap-1 w-full">
                             <UploadTextIcon className="w-6 h-6 lg:mr-2" />
                             <span className="max-lg:hidden">
                                 Upload New Text
                             </span>
                         </div>
-                        </Link>
-                    </button>
-                
+                    </Link>
+                </button>
             </div>
         </div>
     );

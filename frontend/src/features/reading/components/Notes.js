@@ -1,17 +1,28 @@
 import { React, useState, useEffect } from "react";
 import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
 
-function Notes() {
-    const [notes, setNotes] = useState([]); // array of notes
-    const [locations, setLocations] = useState([]); // array of locations [start, end]
-    const [comments, setComments] = useState([]); // array of comments
+var temp = [];
+var tempLocations = [];
+var tempComments = [];
 
-    useEffect(() => {}, [notes]);
+if (localStorage.getItem("notes") !== null) {
+    const tempNotes = JSON.parse(localStorage.getItem("notes"));
+    console.log("local notes", tempNotes);
+    for (var i = 0; i < tempNotes.length; i++) {
+        temp.push(tempNotes[i]["note"]);
+        tempLocations.push(tempNotes[i]["location"]);
+        tempComments.push(tempNotes[i]["comment"]);
+    }
+}
+
+function Notes() {
+    const [notes, setNotes] = useState(temp); // array of notes
+    const [locations, setLocations] = useState(tempLocations); // array of locations
+    const [comments, setComments] = useState(tempComments); // array of comments
 
     useEffect(() => {
         const addNoteButton = document.getElementById("add-note");
         addNoteButton.addEventListener("click", addNote);
-
         return () => {
             addNoteButton.removeEventListener("click", addNote);
         };
@@ -28,18 +39,20 @@ function Notes() {
         }
 
         setNotes((notes) => [...notes, selectedText]);
-        setLocations((locations) => [
-            ...locations,
-            [range.startOffset],
-        ]);
+        setLocations((locations) => [...locations, [range.startOffset]]);
         setComments((comments) => [...comments, ""]);
+
+        localStorage.setItem("isDocSaved", false);
+
+        // saveNotes();
     };
 
     const deleteNote = (index) => {
-        console.log(index);
+        console.log("delete at index", index);
         const updatedNotes = [...notes];
         updatedNotes.splice(index, 1);
         setNotes(updatedNotes);
+        console.log(notes);
 
         const updatedComments = [...comments];
         console.log(updatedComments[index]);
@@ -49,7 +62,35 @@ function Notes() {
         const updatedLocations = [...locations];
         updatedLocations.splice(index, 1);
         setLocations(updatedLocations);
+
+        console.log("delete");
+
+        localStorage.setItem("isDocSaved", false);
+
+        // saveNotes();
     };
+
+    useEffect(() => {
+        if (notes.length === 0) return;
+        const tempNotes = [];
+        for (var i = 0; i < notes.length; i++) {
+            var temp = {
+                note: notes[i],
+                location: locations[i],
+                comment: comments[i],
+            };
+            tempNotes.push(temp);
+        }
+        console.log("temp notes", tempNotes);
+        console.log("saving notes");
+        // localStorage.removeItem("notes");
+        if (tempNotes.length > 0) {
+            localStorage.setItem("notes", JSON.stringify(tempNotes));
+        } else {
+            localStorage.setItem("notes", null);
+        }
+        console.log(localStorage);
+    });
 
     return (
         <div className="collapse collapse-arrow float-left w-full lg:w-[90%] max-w-full h-max bg-base-100 max-md:shadow-md md:shadow-lg my-5">
@@ -66,19 +107,15 @@ function Notes() {
                                 className="input input-xs w-full input-bordered"
                                 type="text"
                                 value={comments[index]}
-                                onChange={
-                                    (e) => {
-                                        console.log(e.target.value);
-                                        const updatedComments = [...comments];
-                                        updatedComments[index] = e.target.value;
-                                        setComments(updatedComments);
-                                    }
-                                    // (e) => setComments(e.target.value)
-                                }
-                                placeholder="Add a comment"
-                                onBlur={() => {
-                                    console.log("onBlur");
+                                onChange={(e) => {
+                                    const updatedComments = [...comments];
+                                    updatedComments[index] = e.target.value;
+                                    setComments(updatedComments);
+
+                                    // saveNotes();
+                                    console.log(comments);
                                 }}
+                                placeholder="Add a comment"
                             />
                         </div>
                         <button

@@ -29,6 +29,10 @@ const routes = [
     path: '/dashboard', // the url
     component: Dashboard, // view rendered
   },
+  {
+    path: '/documents',
+    component: Documents,
+  },
   // {
   //   path: '/welcome', // the url
   //   component: Welcome, // view rendered
@@ -44,10 +48,6 @@ const routes = [
   {
     path: '/calendar',
     component: Calendar,
-  },
-  {
-    path: '/documents',
-    component: Documents,
   },
   {
     path: '/settings-profile',

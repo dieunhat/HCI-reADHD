@@ -118,12 +118,8 @@ def upload_text():
                 'username': 'Username does not exist.'
             }}), 400
         # count user's files
-        user_files = mongo.db.files.find({'username': username})
-        file_id = len(list(user_files))
     else:
-        file_id = 0
         username = ''
-    response['file_id'] = file_id
     response['username'] = username
 
     # save content to temp json file
@@ -172,13 +168,8 @@ def upload_file():
                 return jsonify({'error': {
                     'username': 'Username does not exist.'
                 }}), 400
-            # count user's files
-            user_files = mongo.db.files.find({'username': username})
-            file_id = user_files.count()
         else:
-            file_id = 0
             username = ''
-        response['file_id'] = file_id
         response['username'] = username
 
         # save content to temp json file
@@ -216,9 +207,12 @@ def get_content():
 
 @app.route('/api/get_user_files', methods=['GET'])
 def get_user_files():
-    username = ''
-    if 'username' in request.json:
-        username = request.json['username']
+    # username = ''
+    # if 'username' in request.json:
+    #     username = request.json['username']
+
+    username = request.args.get('username')
+    print(username)
     # Check if username exists
     if not check_user_exist(username):
         return jsonify({'error': {
@@ -230,12 +224,14 @@ def get_user_files():
     response = []
     for file in user_files:
         response.append({
+            '_id': str(file['_id']),
             'title': file['title'],
             'content': file['content'],
             'date': file['date'],
-            'file_id': file['file_id'],
+            'summary': file['summary'],
+            'notes': file['notes'],
         })
-
+    print(response)
     return jsonify(response, {'headers': {'Access-Control-Allow-Origin': '*'}}), 200
 
 
@@ -245,7 +241,12 @@ def save_file():
     username = data['username']
     title = data['title']
     content = data['content']
-    file_id = data['file_id']
+    summary = data['summary']
+    notes = data['notes']
+    if '_id' in data:
+        _id = data['_id']
+    else:
+        _id = None
     # print(username, title, content, file_id)
     user_data = mongo.db.users.find_one({'username': username})
     if user_data is None:
@@ -253,27 +254,26 @@ def save_file():
             'username': 'Username does not exist.'
         }}), 400
     # check if file already exists in database
-    existing_file = mongo.db.files.find_one({
-        '$and': [
-            {'file_id': file_id},
-            {'username': username}
-        ]
-    })
-    # if exist, modify content, date, title
-    if existing_file:
-        existing_file['content'] = content
-        existing_file['date'] = datetime.datetime.now()
-        existing_file['title'] = title
-        mongo.db.files.update_one({'file_id': file_id, 'username': username}, {
-                                '$set': existing_file})
-        return jsonify({"message": "Data updated."}), 200
+    if _id is not None:
+        existing_file = mongo.db.files.find_one({
+            '_id': _id,
+        })
+        # if exist, modify content, date, title
+        if existing_file:
+            existing_file['content'] = content
+            existing_file['date'] = datetime.datetime.now()
+            existing_file['title'] = title
+            mongo.db.files.update_one({'_id': _id}, {
+                                    '$set': existing_file})
+            return jsonify({"message": "Data updated."}), 200
     # if not exist, create new file
     file_data = {
-        'file_id': file_id,
         'username': username,
         'title': title,
         'content': content,
         'date': datetime.datetime.now(),
+        'summary': summary,
+        'notes': notes,
     }
     mongo.db.files.insert_one(file_data)
     return jsonify({"message": "Data inserted."}), 201

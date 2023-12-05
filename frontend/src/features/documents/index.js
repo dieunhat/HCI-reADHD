@@ -2,166 +2,173 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showNotification } from "../common/headerSlice";
-import TitleCard from "../../components/Cards/TitleCard";
+import Title from "../../components/Typography/Title";
 import { RECENT_TRANSACTIONS } from "../../utils/dummyData";
+import { DOCUMENTS } from "../../utils/tempData";
 import FunnelIcon from "@heroicons/react/24/outline/FunnelIcon";
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 import SearchBar from "../../components/Input/SearchBar";
+import ReadIcon from "@heroicons/react/24/outline/BookOpenIcon"
+import { Link, json } from "react-router-dom";
 
-const TopSideButtons = ({ removeFilter, applyFilter, applySearch }) => {
-    const [filterParam, setFilterParam] = useState("");
+const TopSideButtons = ({ applySearch }) => {
     const [searchText, setSearchText] = useState("");
-    const locationFilters = ["Paris", "London", "Canada", "Peru", "Tokyo"];
-
-    const showFiltersAndApply = (params) => {
-        applyFilter(params);
-        setFilterParam(params);
-    };
-
-    const removeAppliedFilter = () => {
-        removeFilter();
-        setFilterParam("");
-        setSearchText("");
-    };
 
     useEffect(() => {
         if (searchText == "") {
-            removeAppliedFilter();
+            // removeAppliedFilter();
         } else {
             applySearch(searchText);
         }
     }, [searchText]);
 
     return (
-        <div className="inline-block float-right w-full">
+        <div className="w-max">
             <SearchBar
                 searchText={searchText}
-                styleClass="mr-4"
+                styleClass="mr-4 max-lg:w-[10rem]"
                 setSearchText={setSearchText}
             />
-            {filterParam != "" && (
-                <button
-                    onClick={() => removeAppliedFilter()}
-                    className="btn btn-xs mr-2 btn-active btn-ghost normal-case"
-                >
-                    {filterParam}
-                    <XMarkIcon className="w-4 ml-2" />
-                </button>
-            )}
-            <div className="dropdown dropdown-bottom dropdown-end">
-                <label tabIndex={0} className="btn btn-sm btn-outline">
-                    <FunnelIcon className="w-5 mr-2" />
-                    Filter
-                </label>
-                <ul
-                    tabIndex={0}
-                    className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52"
-                >
-                    {locationFilters.map((l, k) => {
-                        return (
-                            <li key={k}>
-                                <a onClick={() => showFiltersAndApply(l)}>
-                                    {l}
-                                </a>
-                            </li>
-                        );
-                    })}
-                    <div className="divider mt-0 mb-0"></div>
-                    <li>
-                        <a onClick={() => removeAppliedFilter()}>
-                            Remove Filter
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     );
 };
 
 function Documents() {
-    const [trans, setTrans] = useState(RECENT_TRANSACTIONS);
+    const [docs, setDocs] = useState(DOCUMENTS);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const removeFilter = () => {
-        setTrans(RECENT_TRANSACTIONS);
-    };
-
-    const applyFilter = (params) => {
-        let filteredTransactions = RECENT_TRANSACTIONS.filter((t) => {
-            return t.location == params;
-        });
-        setTrans(filteredTransactions);
-    };
-
-    // Search according to name
     const applySearch = (value) => {
-        let filteredTransactions = RECENT_TRANSACTIONS.filter((t) => {
+        let filteredDocs = DOCUMENTS.filter((t) => {
             return (
-                t.email.toLowerCase().includes(value.toLowerCase()) ||
-                t.email.toLowerCase().includes(value.toLowerCase())
+                t.title.toLowerCase().includes(value.toLowerCase()) ||
+                t.summary.toLowerCase().includes(value.toLowerCase())
             );
         });
-        setTrans(filteredTransactions);
+        setDocs(filteredDocs);
     };
+
+    useEffect(() => {
+        getUserDocs();
+    }, []);
+
+    const getUserDocs = () => {
+        setIsLoading(true);
+        const username = localStorage.getItem("username");
+        setDocs([]);
+        fetch(`/api/get_user_files?username=${username}`, {  
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            // body: JSON.stringify({
+            //     username: localStorage.getItem("username"),
+            // }),
+        }).then((response) => {
+            if (response.status == 200) {
+                response.json().then((data) => {
+                    // setDocs(data);
+                    // const 
+                    console.log(data);
+                    console.log(data[0]);
+                    const files = data[0];
+                    files.forEach((file) => {
+                        var title = file.content;
+                        var date = file.date;
+                        var notes = file.notes;
+                        var summary = file.summary;
+                        var title = file.title;
+                        var _id = file._id;
+
+                        var doc = {
+                            title: title,
+                            date: date,
+                            notes: notes,
+                            summary: summary,
+                            _id: _id,
+                        };
+
+                        setDocs((docs) => [...docs, doc]);
+                    })
+                });
+            } else {
+                response.json().then((data) => {
+                    console.log(data);
+                });
+            }
+        }).catch((error) => {
+            console.error("Error:", error);
+            setIsLoading(false);
+        });
+    }
 
     return (
         <>
-            <TitleCard
-                title="Recent Transactions"
-                topMargin="mt-2"
-                TopSideButtons={
-                    <TopSideButtons
-                        applySearch={applySearch}
-                        applyFilter={applyFilter}
-                        removeFilter={removeFilter}
-                    />
-                }
-            >
+            <div className="card w-[42rem] mx-auto max-lg:w-[90%] h-[36rem] col-span-5 p-4 bg-base-100 max-md:shadow-md md:shadow-lg my-5">
                 {/* Team Member list in table format loaded constant */}
+                <Title
+                    styleClass={
+                        "navbar min-h-[2rem] card-title m-0 py-0 items-center w-full"
+                    }
+                >
+                    <p
+                        className={
+                            "title-text navbar-start text-success-content"
+                        }
+                    >
+                        Documents
+                    </p>
+                    <div className="navbar-end">
+                        <TopSideButtons applySearch={applySearch} />
+                    </div>
+                </Title>
+                <div className="divider"></div>
+
                 <div className="overflow-x-auto w-full">
                     <table className="table w-full">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email Id</th>
-                                <th>Location</th>
-                                <th>Amount</th>
-                                <th>Transaction Date</th>
+                                <th>Title</th>
+                                <th>Summary</th>
+                                <th>Date</th>
+                                <th>Read</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {trans.map((l, k) => {
+                            {docs.map((l, k) => {
                                 return (
                                     <tr key={k}>
                                         <td>
                                             <div className="flex items-center space-x-3">
-                                                <div className="avatar">
-                                                    <div className="mask mask-circle w-12 h-12">
-                                                        <img
-                                                            src={l.avatar}
-                                                            alt="Avatar"
-                                                        />
-                                                    </div>
-                                                </div>
                                                 <div>
                                                     <div className="font-bold">
-                                                        {l.name}
+                                                        {l.title}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{l.email}</td>
-                                        <td>{l.location}</td>
-                                        <td>${l.amount}</td>
+                                        <td>{l.summary}</td>
+
                                         <td>
-                                            {moment(l.date).format("D MMM")}
+                                            {moment(l.date).format(
+                                                "hh:mm DD/MM/YYYY"
+                                            )}
                                         </td>
+                                        
+                                        <td>
+                                            <Link to="/reading">
+                                                <button className="btn btn-ghost text-success-content btn-sm btn-circle">
+                                                    <ReadIcon className="h-6 w-6 text-current" />
+                                                </button>
+                                            </Link>
+                                        </td>
+
                                     </tr>
                                 );
                             })}
                         </tbody>
                     </table>
                 </div>
-            </TitleCard>
+            </div>
         </>
     );
 }

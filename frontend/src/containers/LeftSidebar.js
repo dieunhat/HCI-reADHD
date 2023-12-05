@@ -13,7 +13,7 @@ function LeftSidebar() {
 
     return (
         <>
-            <ul className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-80 text-base-content">
+            <ul className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-max min-w-[14rem] text-base-content">
                 {/*<button className="btn btn-ghost bg-none  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute" onClick={() => close()}>*/}
                 {/*    <MenuIcon className="h-5 inline-block w-5"/>*/}
                 {/*</button>*/}

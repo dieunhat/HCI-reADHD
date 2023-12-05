@@ -18,6 +18,7 @@ function WelcomePage() {
     const dispatch = useDispatch();
     const [inputText, setInputText] = useState();
     const [inputFile, setInputFile] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     const [currentButtonAddText, setCurrentButtonAddText] = useState(true);
 
@@ -59,6 +60,7 @@ function WelcomePage() {
         if (currentButtonAddText) {
             // send inputText to backend
             console.log("input text is: " + inputText);
+            setIsLoading(true);
             fetch("/api/upload_text", {
                 method: "POST",
                 headers: {
@@ -79,6 +81,7 @@ function WelcomePage() {
                 })
                 .catch((error) => {
                     console.error("Error:", error);
+                    setIsLoading(false);
                 });
         } else {
             // send inputFile to backend
@@ -88,6 +91,7 @@ function WelcomePage() {
             formData.append("filename", inputFile.name);
             formData.append("username", username);
             console.log(formData);
+            setIsLoading(true);
             fetch("/api/upload_file", {
                 method: "POST",
                 headers: {
@@ -101,12 +105,16 @@ function WelcomePage() {
                     console.log(response);
                     response.json().then((r) => {
                         console.log(r);
+                        localStorage.removeItem("summary");
+                        localStorage.removeItem("notes");
+                        localStorage.setItem("isDocSaved", false)
                         console.log("redirecting to reading page");
                         redirect("/app/reading");
                     });
                 })
                 .catch((error) => {
                     console.error("Error:", error);
+                    setIsLoading(false);
                 });
         }
     };
