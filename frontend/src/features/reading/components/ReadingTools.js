@@ -51,6 +51,22 @@ function ReadingTools() {
         range.insertNode(span);
     };
 
+    const decreaseDocumentTextSize = () => {
+        const doc = document.getElementById("content");
+        const size = parseInt(doc.style.fontSize);
+        if (size > 12) {
+            doc.style.fontSize = (size - 2) + "px";
+        }
+    }
+
+    const increaseDocumentTextSize = () => {
+        const doc = document.getElementById("content");
+        const size = parseInt(doc.style.fontSize);
+        if (size < 20) {
+            doc.style.fontSize = (size + 2) + "px";
+        }
+    }
+
     return (
         <div className="w-full col-span-2">
             <div
@@ -91,6 +107,26 @@ function ReadingTools() {
                             <span className="max-lg:hidden">Audio Off</span>
                         </div>
                     )}
+                </button>
+                <button
+                    id="decrease-text-size-button"
+                    className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary hover:z-10"
+                    onClick={() => decreaseDocumentTextSize()}
+                    data-tip={"Click here to decrease text size"}
+                >
+                    <div className="flex flex-row items-center gap-1 w-full">
+                        <span>- Size</span>
+                    </div>
+                </button>
+                <button
+                    id="increase-text-size-button"
+                    className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary hover:z-10"
+                    onClick={() => increaseDocumentTextSize()}
+                    data-tip={"Click here to increase text size"}
+                >
+                    <div className="flex flex-row items-center gap-1 w-full">
+                        <span>+ Size</span>
+                    </div>
                 </button>
                 <button
                     id="highlight"
