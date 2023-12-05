@@ -1,6 +1,8 @@
 import Title from "../../../components/Typography/Title";
 import React from "react";
 import { bionicReading } from "bionic-reading";
+import IncreaseFontSizeIcon from "@heroicons/react/24/outline/MagnifyingGlassPlusIcon";
+import DecreaseFontSizeIcon from "@heroicons/react/24/outline/MagnifyingGlassMinusIcon";
 
 if (localStorage.getItem('username') !== null && localStorage.getItem('username') !== undefined) {
     var username = localStorage.getItem('username');
@@ -104,6 +106,25 @@ function ReadingPanel({ content, contentTitle }) {
         }
     };
 
+    const decreaseDocumentTextSize = () => {
+        const doc = document.getElementById("content");
+        const doc_text = doc.childNodes[0];
+        const size = parseInt(doc_text.style.fontSize);
+        if (size > 12) {
+            doc_text.style.fontSize = (size - 2) + "px";
+        }
+    }
+
+    const increaseDocumentTextSize = () => {
+        const doc = document.getElementById("content");
+        const doc_text = doc.childNodes[0];
+        const size = parseInt(doc_text.style.fontSize);
+        if (size < 20) {
+            doc_text.style.fontSize = (size + 2) + "px";
+        }
+    }
+
+
 
     return (
         <>
@@ -114,10 +135,10 @@ function ReadingPanel({ content, contentTitle }) {
                 }
             >
                 
-                <Title styleClass={"inline-block card-title px-6 items-center"}>
-                    <p id='doc-title' className={"title-text inline-block text-success-content"}>{contentTitle}</p>
+                <Title styleClass={"navbar min-h-[2rem] card-title m-0 py-0 items-center w-full"}>
+                    <p id='doc-title' className={"title-text navbar-start text-success-content"}>{contentTitle}</p>
 
-                    <div className="flex flex-row float-right w-fit gap-3 items-center">
+                    <div className="navbar-end flex flex-row  w-full gap-3">
                         
                         {/* <button
                             className={
@@ -139,6 +160,18 @@ function ReadingPanel({ content, contentTitle }) {
                                     {isBionicMode ? "ON" : "OFF"}
                                 </span>
                             </label>
+                        </div>
+                        <div className="flex flex-row gap-0.5 items-center h-full">
+                            <button onClick={decreaseDocumentTextSize} 
+                            data-tip="Decrease font size"
+                            className="tooltip tooltip-top tooltip-info">
+                                <DecreaseFontSizeIcon className="w-6 h-6" />
+                            </button>
+                            <button onClick={increaseDocumentTextSize}
+                            data-tip={"Increase font size"}
+                            className="tooltip tooltip-top tooltip-info">
+                                <IncreaseFontSizeIcon className="w-6 h-6" />
+                            </button>
                         </div>
                     </div>
                 </Title>

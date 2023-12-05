@@ -56,26 +56,9 @@ function ReadingTools() {
         range.insertNode(span);
     };
 
-    const decreaseDocumentTextSize = () => {
-        const doc = document.getElementById("content");
-        const doc_text = doc.childNodes[0];
-        const size = parseInt(doc_text.style.fontSize);
-        if (size > 12) {
-            doc_text.style.fontSize = (size - 2) + "px";
-        }
-    }
-
-    const increaseDocumentTextSize = () => {
-        const doc = document.getElementById("content");
-        const doc_text = doc.childNodes[0];
-        const size = parseInt(doc_text.style.fontSize);
-        if (size < 20) {
-            doc_text.style.fontSize = (size + 2) + "px";
-        }
-    }
 
     return (
-        <div className="w-full col-span-2">
+        <div className="col-span-2 max-w-full">
             <div className="join join-vertical h-max w-max float-right items-right my-5">
                 {token ? (
                     <>
@@ -130,28 +113,6 @@ function ReadingTools() {
                             <span className="max-lg:hidden">Audio Off</span>
                         </div>
                     )}
-                </button>
-                <button
-                    id="decrease-text-size-button"
-                    className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary hover:z-10"
-                    onClick={() => decreaseDocumentTextSize()}
-                    data-tip={"Click here to decrease text size"}
-                >
-                    <div className="flex flex-row items-center gap-1 w-full">
-                        <DecreaseFontSizeIcon className="w-6 h-6 lg:mr-2" />
-                        <span>Decrease Font Size</span>
-                    </div>
-                </button>
-                <button
-                    id="increase-text-size-button"
-                    className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary hover:z-10"
-                    onClick={() => increaseDocumentTextSize()}
-                    data-tip={"Click here to increase text size"}
-                >
-                    <div className="flex flex-row items-center gap-1 w-full">
-                        <IncreaseFontSizeIcon className="w-6 h-6 lg:mr-2" />
-                        <span>Increase Font Size</span>
-                    </div>
                 </button>
                 <button
                     id="highlight"
