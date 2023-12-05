@@ -50,7 +50,7 @@ function Login() {
                         localStorage.setItem("username", data.username);
                         localStorage.setItem("email", data.email);
                         localStorage.setItem("fullname", data.fullname);
-                        localStorage.setItem('token', data.username)
+                        localStorage.setItem("token", data.username);
                         // localStorage.setItem("username", JSON.stringify(loginObj.username));
                         setLoading(false);
                         window.location.href = "/welcome";
@@ -75,7 +75,9 @@ function Login() {
     return (
         <div className="min-h-screen bg-base-100 flex items-center">
             <div className="card card-side card-bordered mx-auto w-full max-w-5xl shadow-xl h-[42rem]">
-                <LandingIntro />
+                <figure>
+                    <img src="background_2.png" className="h-full" />
+                </figure>
                 {/* <div className="card-body grid md:grid-cols-2 grid-cols-1  bg-base-100 rounded-xl">
                  */}
                 <div className="card-body min-w-[50%] py-8 px-14 text-center">
@@ -114,12 +116,12 @@ function Login() {
                                 {errorPassword}
                             </ErrorText>
                             <div className="text-right text-primary">
-                            <Link to="/forgot-password">
-                                <span className="text-sm  inline-block  hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
-                                    Forgot Password?
-                                </span>
-                            </Link>
-                        </div>
+                                <Link to="/forgot-password">
+                                    <span className="text-sm  inline-block  hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
+                                        Forgot Password?
+                                    </span>
+                                </Link>
+                            </div>
                         </div>
 
                         <ErrorText styleClass="mt-8">{errorMessage}</ErrorText>

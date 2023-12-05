@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import LandingIntro from "./LandingIntro";
 import ErrorText from "../../components/Typography/ErrorText";
 import InputText from "../../components/Input/InputText";
+import Logo from "../../components/Logo";
 
 function Register() {
     const INITIAL_REGISTER_OBJ = {
@@ -33,7 +33,9 @@ function Register() {
             // return setErrorMessage("Please enter your full name.");
             return setErrorFullname("Please enter your full name.");
         if (registerObj.fullname.trim().length < 6)
-            return setErrorFullname("The full name must be at least 6 characters long.")
+            return setErrorFullname(
+                "The full name must be at least 6 characters long."
+            );
 
         if (registerObj.email.trim() === "")
             // return setErrorMessage("Please enter your email.");
@@ -45,7 +47,6 @@ function Register() {
         if (registerObj.password.trim() === "")
             // return setErrorMessage("Please enter your password.");
             return setErrorPassword("Please enter your password.");
-
         else {
             setLoading(true);
             // Call API to check user credentials and save token in localstorage
@@ -65,11 +66,14 @@ function Register() {
                         setErrorFullname(data.error["Fullname"]);
                         setErrorPassword(data.error["password"]);
                         setErrorEmail(data.error["email"]);
-                        
+
                         setLoading(false);
                     } else {
-                        console.log('no more error');
-                        localStorage.setItem("token", JSON.stringify(registerObj));
+                        console.log("no more error");
+                        localStorage.setItem(
+                            "token",
+                            JSON.stringify(registerObj)
+                        );
                         setLoading(false);
                         window.location.href = "/login";
                     }
@@ -93,87 +97,87 @@ function Register() {
     };
 
     return (
-        <div className="min-h-screen bg-base-200 flex items-center">
-            <div className="card mx-auto w-full max-w-5xl  shadow-xl">
-                <div className="grid  md:grid-cols-2 grid-cols-1  bg-base-100 rounded-xl">
-                    <div className="max-lg:hidden">
-                        <LandingIntro />
-                    </div>
-                    <div className="py-24 px-10">
-                        <h2 className="text-2xl font-semibold mb-2 text-center">
+        <div className="min-h-screen bg-base-100 flex items-center">
+            <div className="card card-side card-bordered mx-auto w-full max-w-5xl shadow-xl h-[42rem]">
+                <figure><img src="background_2.png" className="h-full" /></figure>
+                <div className="card-body min-w-[50%] py-6 px-14 text-center">
+                    <h1 className="text-5xl font-bold my-4 text-center">
+                        <Logo />
+                    </h1>
+
+                    <form onSubmit={(e) => submitForm(e)}>
+                    <h2 className=" card-title text-2xl font-semibold">
                             Register
                         </h2>
-                        <form onSubmit={(e) => submitForm(e)}>
-                            <div className="mb-4">
-                                <InputText
-                                    defaultValue={registerObj.username}
-                                    updateType="username"
-                                    containerStyle="mt-4"
-                                    labelTitle="Username"
-                                    updateFormValue={updateFormValue}
-                                />
-                                <ErrorText styleClass="text-sm">
-                                    {errorUsername}
-                                </ErrorText>
-
-                                <InputText
-                                    defaultValue={registerObj.fullname}
-                                    updateType="fullname"
-                                    containerStyle="mt-4"
-                                    labelTitle="Fullname"
-                                    updateFormValue={updateFormValue}
-                                />
-                                <ErrorText styleClass="text-sm">
-                                    {errorFullname}
-                                </ErrorText>
-
-                                <InputText
-                                    defaultValue={registerObj.email}
-                                    updateType="email"
-                                    containerStyle="mt-4"
-                                    labelTitle="Email"
-                                    updateFormValue={updateFormValue}
-                                />
-                                <ErrorText styleClass="text-sm">
-                                    {errorEmail}
-                                </ErrorText>
-
-                                <InputText
-                                    defaultValue={registerObj.password}
-                                    type="password"
-                                    updateType="password"
-                                    containerStyle="mt-4"
-                                    labelTitle="Password"
-                                    updateFormValue={updateFormValue}
-                                />
-                                <ErrorText styleClass="text-sm">
-                                    {errorPassword}
-                                </ErrorText>
-                            </div>
-
-                            <ErrorText styleClass="mt-8">
-                                {errorMessage}
+                        <div className="mb-2">
+                            <InputText
+                                defaultValue={registerObj.username}
+                                updateType="username"
+                                containerStyle="mt-1"
+                                labelTitle="Username"
+                                updateFormValue={updateFormValue}
+                            />
+                            <ErrorText styleClass="text-sm">
+                                {errorUsername}
                             </ErrorText>
+
+                            <InputText
+                                defaultValue={registerObj.fullname}
+                                updateType="fullname"
+                                containerStyle="mt-1"
+                                labelTitle="Fullname"
+                                updateFormValue={updateFormValue}
+                            />
+                            <ErrorText styleClass="text-sm">
+                                {errorFullname}
+                            </ErrorText>
+
+                            <InputText
+                                defaultValue={registerObj.email}
+                                updateType="email"
+                                containerStyle="mt-1"
+                                labelTitle="Email"
+                                updateFormValue={updateFormValue}
+                            />
+                            <ErrorText styleClass="text-sm">
+                                {errorEmail}
+                            </ErrorText>
+
+                            <InputText
+                                defaultValue={registerObj.password}
+                                type="password"
+                                updateType="password"
+                                containerStyle="mt-1 text-sm"
+                                labelTitle="Password"
+                                updateFormValue={updateFormValue}
+                            />
+                            <ErrorText styleClass="text-sm">
+                                {errorPassword}
+                            </ErrorText>
+                        </div>
+
+                        <ErrorText styleClass="mt-8">{errorMessage}</ErrorText>
+                        <div className="w-full text-center">
                             <button
                                 type="submit"
                                 className={
-                                    "btn mt-2 w-full btn-primary" +
+                                    "btn mt-1 btn-wide btn-primary" +
                                     (loading ? " loading" : "")
                                 }
                             >
                                 Register
                             </button>
+                        </div>
 
-                            <div className="text-center mt-4">
-                                Already have an account?
-                                <Link to="/login">
-                                    <span className="  inline-block  hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
-                                        Login
-                                    </span>
-                                </Link>
-                            </div>
-                        </form>
-                    </div>
+                        <div className="text-center mt-4">
+                            Already have an account?{" "}
+                            <Link to="/login">
+                            <span className="inline-block font-bold hover:text-primary hover:underline hover:cursor-pointer transition duration-200">
+                                    Login
+                                </span>
+                            </Link>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -21,7 +21,7 @@ console.log("token:", token);
 
 let username = "";
 if (token) {
-    username = JSON.parse(token)["username"];
+    username = token["username"];
 }
 
 // localStorage.setItem("token", "");
