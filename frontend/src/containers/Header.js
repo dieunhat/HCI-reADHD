@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
 import MoonIcon from "@heroicons/react/24/outline/MoonIcon";
 import SunIcon from "@heroicons/react/24/solid/SunIcon";
@@ -20,8 +19,8 @@ const token = checkAuth();
 console.log("token:", token);
 
 let username = "";
-if (localStorage.getItem('username') !== null) {
-    username = localStorage.getItem('username');
+if (localStorage.getItem("username") !== null) {
+    username = localStorage.getItem("username");
 }
 
 // localStorage.setItem("token", "");
@@ -77,10 +76,10 @@ function Header() {
         );
     };
 
-    function logoutUser() {
-        localStorage.clear();
-        window.location.href = "/";
-    }
+        function logoutUser() {
+            localStorage.clear();
+            window.location.href = "/";
+            }
 
     return (
         <>
@@ -112,17 +111,6 @@ function Header() {
                 </div>
 
                 <div className="navbar-end">
-                    {/* Multiple theme selection, uncomment this if you want to enable multiple themes selection,
-                    also includes corporate and retro themes in tailwind.config file */}
-
-                    {/* <select className="select select-sm mr-4" data-choose-theme>
-                        <option disabled selected>Theme</option>
-                        <option value="light">Default</option>
-                        <option value="dark">Dark</option>
-                        <option value="corporate">Corporate</option>
-                        <option value="retro">Retro</option>
-                    </select> */}
-
                     {/* Light and dark theme selection toogle **/}
                     <label className="swap swap-rotate">
                         <input
@@ -139,20 +127,6 @@ function Header() {
 
                     {token ? (
                         <div>
-                            {/* <button
-                                className="btn btn-ghost md:ml-4 btn-circle"
-                                onClick={() => openNotification()}
-                            >
-                                <div className="indicator">
-                                    <BellIcon className="h-6 w-6" />
-                                    {noOfNotifications > 0 ? (
-                                        <span className="indicator-item badge badge-secondary badge-sm">
-                                            {noOfNotifications}
-                                        </span>
-                                    ) : null}
-                                </div>
-                            </button> */}
-
                             <div className="dropdown dropdown-end md:ml-4 w-fit">
                                 <label tabIndex={0} className="">
                                     <div className="btn btn-ghost btn-circle avatar">
@@ -178,36 +152,63 @@ function Header() {
                                             {/* <span className="badge">New</span> */}
                                         </Link>
                                     </li>
-                                    {/* <li className="">
-                                        <Link to={"/app/settings-billing"}>
-                                            Bill History
-                                        </Link>
-                                    </li> */}
+
                                     <div className="divider mt-0 mb-0"></div>
                                     <li className="justify-between">
-                                        <a onClick={logoutUser}>
+                                        <a
+                                            onClick={() =>
+                                                document
+                                                    .getElementById(
+                                                        "logout_modal"
+                                                    )
+                                                    .showModal()
+                                            }
+                                        >
                                             <div>
                                                 <LogoutIcon className="h-6 w-6 self-center" />
                                             </div>
                                             Logout
                                         </a>
                                     </li>
+                                    <dialog id="logout_modal" className="modal">
+                                        <div className="modal-box h-[12rem]">
+                                        <form method="dialog">
+                                                {/* if there is a button in form, it will close the modal */}
+                                                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                                                    ✕
+                                                </button>
+                                            </form>
+                                            <p className="py-4 font-bold text-2xl text-center">
+                                                Are you sure you want to logout?
+                                            </p>
+                                            <form className="w-full mx-auto text-center" method="dialog">
+                                                <button id="confirm-logout" className="btn btn-error btn-sm m-3" onClick={logoutUser}>
+                                                    Logout
+                                                </button>
+                                                <button className="btn btn-warning btn-sm m-3">
+                                                    Cancel
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </dialog>
                                 </ul>
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-row md:gap-4 max-md:gap-1 md:ml-5 max-md:ml-1">
-                            <Link to={"/register"}>
-                                <button className="btn btn-accent text-info btn-sm max-md:hidden">
-                                    Register
-                                </button>
-                            </Link>
-                            <Link to={"/login"}>
-                                <button className="btn btn-error text-info btn-sm">
-                                    Login
-                                </button>
-                            </Link>
-                        </div>
+                        <>
+                            <div className="flex flex-row md:gap-4 max-md:gap-1 md:ml-5 max-md:ml-1">
+                                <Link to={"/register"}>
+                                    <button className="btn btn-accent text-info btn-sm max-md:hidden">
+                                        Register
+                                    </button>
+                                </Link>
+                                <Link to={"/login"}>
+                                    <button className="btn btn-error text-info btn-sm">
+                                        Login
+                                    </button>
+                                </Link>
+                            </div>
+                        </>
                     )}
                 </div>
             </div>

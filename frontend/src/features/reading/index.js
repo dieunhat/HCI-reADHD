@@ -34,7 +34,11 @@ function ReadingPage() {
 
     const getContent = () => {
         setIsLoading(true);
-        fetch(`/api/get_user_files?username=${username}`, {
+        var api = `/api/get_content`
+        if (username !== null) {
+            api += `?username=${username}`
+        }
+        fetch(`/api/get_content?username=${username}`, {
             method: "GET",
 			headers: {
 				'Content-Type': 'application/json',

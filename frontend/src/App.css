@@ -102,6 +102,8 @@
   @apply hover:border-red-900;
   @apply focus:bg-red-500;
 }
+
+
 :root::highlight(example) {
   background: #FBD178;
   color: #0B0A0A;

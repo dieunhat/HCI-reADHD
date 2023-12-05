@@ -200,6 +200,8 @@ def get_content():
     # return res
 
     username = request.args.get('username')
+    if username is None:
+        username = ''
     print(username)
     # Check if username exists
     if not check_user_exist(username):
