@@ -19,8 +19,15 @@ import Logo from "../components/Logo";
 const token = checkAuth();
 console.log("token:", token);
 
+let username = "";
+if (token) {
+    username = JSON.parse(token)["username"];
+}
+
+// localStorage.setItem("token", "");
+
 function Header() {
-    const username = JSON.parse(token)["username"];
+    // const username = JSON.parse(token)["username"];
     const dispatch = useDispatch();
     const { noOfNotifications, pageTitle } = useSelector(
         (state) => state.header
