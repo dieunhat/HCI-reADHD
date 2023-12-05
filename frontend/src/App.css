@@ -1,0 +1,110 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+::-moz-selection {
+  background: #63A3B2;
+  color: #F1F0E8;
+}
+::-webkit-selection {
+  background: #63A3B2;
+  color: #F1F0E8;
+}
+::selection {
+  background: #63A3B2;
+  color: #F1F0E8;
+}
+
+.btn {
+  @apply shadow-lg;
+  @apply border-spacing-1;
+  @apply border-[3px];
+  @apply border-b-[7px];
+  @apply hover:shadow-none;
+  @apply active:border-b-[3px];
+  @apply active:shadow-none;
+}
+
+.btn-sm {
+  @apply shadow-sm;
+  @apply border-spacing-0;
+  @apply border-[2px];
+  @apply border-b-[6px];
+  @apply hover:shadow-none;
+  @apply active:border-b-[2px];
+  @apply active:shadow-none;
+}
+
+.btn-circle {
+  @apply rounded-full;
+  /* @apply shadow-none; */
+}
+
+.btn-primary {
+  @apply border-stone-700;
+  @apply hover:border-b-4;
+  @apply hover:border-stone-800;
+  @apply focus:bg-stone-500;
+}
+
+.btn-warning {
+  @apply border-yellow-600;
+  @apply hover:border-b-4;
+  @apply hover:border-yellow-800;
+  @apply focus:bg-yellow-200;
+}
+
+.btn-accent {
+  @apply border-teal-800;
+  @apply hover:border-b-4;
+  @apply hover:border-teal-900;
+  @apply focus:bg-teal-400;
+}
+
+.btn-error {
+  @apply border-red-700;
+  @apply hover:border-b-4;
+  @apply hover:border-red-900;
+  @apply focus:bg-red-500;
+}
+
+
+:root::highlight(example) {
+  background: #FBD178;
+  color: #0B0A0A;
+}
