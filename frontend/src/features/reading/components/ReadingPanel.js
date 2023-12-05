@@ -145,8 +145,8 @@ function ReadingPanel({ content, contentTitle }) {
                 <div className="divider mt-2"></div>
                 <div className="h-full w-full pb-6 bg-base-100">
                     <div className="card-body text-justify w-full h-max py-1">
-                        <article id="content" className="prose max-w-[48rm]" style={{fontSize : '16px'}}>
-                            <div className="w-full min-w-[38rem]"
+                        <article id="content" className="prose max-w-[48rm]">
+                            <div className="w-full min-w-[38rem]" style={{fontSize : '16px'}}
                             dangerouslySetInnerHTML={{ __html: currentText !== "" ? currentText : content.replace(/\n/g, "<br>") }} />
                         </article>
                     </div>

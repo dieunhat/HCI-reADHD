@@ -6,6 +6,8 @@ import SummaryIcon from "@heroicons/react/24/outline/DocumentTextIcon";
 import NoteIcon from "@heroicons/react/24/outline/PencilSquareIcon";
 import UploadTextIcon from "@heroicons/react/24/outline/ArrowUpTrayIcon";
 import SaveIcon from "@heroicons/react/24/outline/FolderIcon";
+import IncreaseFontSizeIcon from "@heroicons/react/24/outline/MagnifyingGlassPlusIcon";
+import DecreaseFontSizeIcon from "@heroicons/react/24/outline/MagnifyingGlassMinusIcon";
 import checkAuth from "../../../app/auth";
 
 const token = checkAuth();
@@ -56,17 +58,19 @@ function ReadingTools() {
 
     const decreaseDocumentTextSize = () => {
         const doc = document.getElementById("content");
-        const size = parseInt(doc.style.fontSize);
+        const doc_text = doc.childNodes[0];
+        const size = parseInt(doc_text.style.fontSize);
         if (size > 12) {
-            doc.style.fontSize = (size - 2) + "px";
+            doc_text.style.fontSize = (size - 2) + "px";
         }
     }
 
     const increaseDocumentTextSize = () => {
         const doc = document.getElementById("content");
-        const size = parseInt(doc.style.fontSize);
+        const doc_text = doc.childNodes[0];
+        const size = parseInt(doc_text.style.fontSize);
         if (size < 20) {
-            doc.style.fontSize = (size + 2) + "px";
+            doc_text.style.fontSize = (size + 2) + "px";
         }
     }
 
@@ -134,7 +138,8 @@ function ReadingTools() {
                     data-tip={"Click here to decrease text size"}
                 >
                     <div className="flex flex-row items-center gap-1 w-full">
-                        <span>- Size</span>
+                        <DecreaseFontSizeIcon className="w-6 h-6 lg:mr-2" />
+                        <span>Decrease Font Size</span>
                     </div>
                 </button>
                 <button
@@ -144,7 +149,8 @@ function ReadingTools() {
                     data-tip={"Click here to increase text size"}
                 >
                     <div className="flex flex-row items-center gap-1 w-full">
-                        <span>+ Size</span>
+                        <IncreaseFontSizeIcon className="w-6 h-6 lg:mr-2" />
+                        <span>Increase Font Size</span>
                     </div>
                 </button>
                 <button
@@ -195,19 +201,21 @@ function ReadingTools() {
                     </div>
                 </button>
                 {/* upload new text or file button -> redirect to welcome page */}
-                <Link to="/welcome" className="w-full join-item">
+                
                     <button
                         className="btn btn-info join-item tooltip tooltip-bottom tooltip-primary hover:z-10"
                         data-tip="Click here to upload new text"
                     >
-                        <div className="flex flex-row items-center gap-1">
+                        <Link to="/welcome" className="">
+                        <div className="flex flex-row items-center gap-1 w-full">
                             <UploadTextIcon className="w-6 h-6 lg:mr-2" />
                             <span className="max-lg:hidden">
                                 Upload New Text
                             </span>
                         </div>
+                        </Link>
                     </button>
-                </Link>
+                
             </div>
         </div>
     );

@@ -27,7 +27,6 @@ if (token) {
 // localStorage.setItem("token", "");
 
 function Header() {
-    
     const dispatch = useDispatch();
     const { noOfNotifications, pageTitle } = useSelector(
         (state) => state.header
@@ -87,11 +86,15 @@ function Header() {
         <>
             <div className="navbar sticky flex justify-between bg-info z-10 shadow-md md:px-5 max-md:px-1">
                 <div className="navbar-start flex flex-row gap-4">
-                    <div className="dropdown">
+                    <div
+                        className="dropdown tooltip tooltip-bottom tooltip-warning"
+                        data-tip={"Menu"}
+                    >
                         <div
                             tabIndex={0}
                             role="button"
                             className="btn btn-primary btn-warning dropdown-toggle"
+                            data-tip={"Menu"}
                         >
                             <Bars3Icon className="h-5 inline-block w-5" />
                         </div>
