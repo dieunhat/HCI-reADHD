@@ -27,79 +27,6 @@ function ReadingPanel({ content, contentTitle }) {
         });
     });
 
-    const clickSaveButton = () => {
-        if (isDocSaved) {
-            return;
-        }
-        const doc_title = document.getElementById("doc-title").innerText;
-        const doc_content = document.getElementById("content").innerText;
-        console.log(doc_title);
-        console.log(doc_content);
-
-        //     send request to backend to save document
-        setIsLoading(true);
-        fetch("/api/save_file", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username: localStorage.getItem("username"),
-                title: doc_title,
-                content: doc_content,
-                summary: localStorage.getItem("summary"),
-                notes: localStorage.getItem("notes"),
-                _id: localStorage.getItem("_id"),
-            }),
-        })
-            .then((response) => {
-                console.log(response);
-                if (response.status === 200) {
-                    setIsDocSaved(true);
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                setIsLoading(false);
-            });
-    };
-
-    React.useEffect(() => {
-        const saveDocButton = document.getElementById("save-doc");
-        if (saveDocButton === null) {
-            console.log("Save button not found");
-            return;
-        }
-        saveDocButton.addEventListener(
-            "click",
-            () => {
-                console.log("Save button clicked");
-                clickSaveButton();
-                saveDocButton.childNodes[0].childNodes[0].classList.add(
-                    "text-success-content"
-                );
-                saveDocButton.childNodes[0].childNodes[1].classList.add(
-                    "text-success-content"
-                );
-                setTimeout(() => {
-                    saveDocButton.childNodes[0].childNodes[0].classList.remove(
-                        "text-success-content"
-                    );
-                    saveDocButton.childNodes[0].childNodes[1].classList.remove(
-                        "text-success-content"
-                    );
-                }, 2500);
-            },
-            []
-        );
-
-        if (isDocSaved) {
-            saveDocButton.childNodes[0].childNodes[0].innerText = "Saved";
-        } else {
-            saveDocButton.childNodes[0].childNodes[0].innerText =
-                "Save Document";
-        }
-    });
 
     // switch to bionic reading mode if bionic mode is clicked
     const handleBionicButtonClick = () => {
@@ -152,7 +79,7 @@ function ReadingPanel({ content, contentTitle }) {
                     <p
                         id="doc-title"
                         className={
-                            "title-text navbar-start text-success-content min-w-[12rem]"
+                            "title-text navbar-start text-success-content text-justify min-w-[12rem]"
                         }
                     >
                         {contentTitle}
