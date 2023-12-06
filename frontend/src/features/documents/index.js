@@ -5,6 +5,7 @@ import Title from "../../components/Typography/Title";
 import SearchBar from "../../components/Input/SearchBar";
 import ReadIcon from "@heroicons/react/24/outline/BookOpenIcon";
 import { Link, json, useNavigate } from "react-router-dom";
+import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
 
 const TopSideButtons = ({removeFilter, applySearch }) => {
     const [searchText, setSearchText] = useState("");
@@ -66,6 +67,14 @@ function Documents() {
     useEffect(() => {
         getUserDocs();
     }, []);
+
+    const handleDeleteFile = (doc) => {
+        console.log(doc);
+
+        const tempDocs = docs.filter((d) => d._id !== doc._id);
+        setDocs(tempDocs);
+
+    };
 
     const handleReadFile = (doc) => {
         console.log(doc);
@@ -164,6 +173,7 @@ function Documents() {
                                 <th className="text-lg">Summary</th>
                                 <th className="text-lg">Date</th>
                                 <th className="text-lg">Read</th>
+                                <th className="text-lg">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -200,6 +210,16 @@ function Documents() {
                                                 }
                                             >
                                                 <ReadIcon className="h-6 w-6 text-current" />
+                                            </button>
+                                        </td>
+                                        <td className="text-center">
+                                            <button
+                                                className="btn btn-ghost text-error-content btn-sm btn-circle"
+                                                onClick={() =>
+                                                    handleDeleteFile(docs[k])
+                                                }
+                                            >
+                                                <TrashIcon className="h-6 w-6 text-error" />
                                             </button>
                                         </td>
                                     </tr>

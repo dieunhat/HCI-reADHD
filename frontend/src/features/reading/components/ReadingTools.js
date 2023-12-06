@@ -12,6 +12,10 @@ const token = checkAuth();
 
 function ReadingTools() {
     const [isAudioPlaying, setIsAudioPlaying] = React.useState();
+    const [isDocSaved, setIsDocSaved] = React.useState(
+        localStorage.getItem("isDocSaved") === true
+    );
+    const [isLoading, setIsLoading] = React.useState(false);
 
     useEffect(() => {
         const audio = document.getElementById("audio");
@@ -19,6 +23,62 @@ function ReadingTools() {
             setIsAudioPlaying(true);
         });
     });
+
+    const clickSaveButton = () => {
+        if (isDocSaved) {
+            return;
+        }
+        const doc_title = document.getElementById("doc-title").innerText;
+        const doc_content = document.getElementById("content").innerText;
+        console.log(doc_title);
+        console.log(doc_content);
+
+        //     send request to backend to save document
+        setIsLoading(true);
+        fetch("/api/save_file", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: localStorage.getItem("username"),
+                title: doc_title,
+                content: doc_content,
+                summary: localStorage.getItem("summary"),
+                notes: localStorage.getItem("notes"),
+                _id: localStorage.getItem("_id"),
+            }),
+        })
+            .then((response) => {
+                console.log(response);
+                if (response.status === 200) {
+                    setIsDocSaved(true);
+                    const saveDocButton = document.getElementById("save-doc")
+                    saveDocButton.childNodes[0].childNodes[0].innerText = "Saved"
+                    saveDocButton.childNodes[0].childNodes[0].classList.add(
+                        "text-success-content"
+                    );
+                    saveDocButton.childNodes[0].childNodes[1].classList.add(
+                        "text-success-content"
+                    );
+                    setTimeout(() => {
+                        saveDocButton.childNodes[0].childNodes[0].innerText = "Save Document"
+                        saveDocButton.childNodes[0].childNodes[0].classList.remove(
+                            "text-success-content"
+                        );
+                        saveDocButton.childNodes[0].childNodes[1].classList.remove(
+                            "text-success-content"
+                        );
+                    }, 2500);
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                setIsLoading(false);
+            });
+    };
+
+    
 
     // play or pause audio
     const handleAudioButtonClick = () => {
@@ -63,6 +123,7 @@ function ReadingTools() {
                             id="save-doc"
                             className="join-item btn btn-info tooltip tooltip-bottom tooltip-primary hover:z-10"
                             data-tip={"Click here to save the document"}
+                            onClick={clickSaveButton}
                         >
                             <div className="flex flex-row items-center gap-1 w-full">
                                 <SaveIcon className="w-6 h-6 lg:mr-2" />
