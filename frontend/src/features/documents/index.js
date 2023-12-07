@@ -73,6 +73,8 @@ function Documents() {
 
         const tempDocs = docs.filter((d) => d._id !== doc._id);
         setDocs(tempDocs);
+        DOCUMENTS = [];
+        DOCUMENTS.push(tempDocs);
 
     };
 
